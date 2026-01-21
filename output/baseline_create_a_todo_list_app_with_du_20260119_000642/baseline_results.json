@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "vibe_prompt": "Create a todo list app with due dates and priority levels, which sould have minimum features : add tasks with title, set due date for tasks, assign priority (high/medium/low), mark tasks complete, delete tasks, filter by priority, sort by due date",
+  "project_dir": "output\\baseline_create_a_todo_list_app_with_du_20260119_000642",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Add Task",
+        "description": "As a user, I want to add a task with a title, due date, and priority level so I can track my to-dos.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Set Due Date",
+        "description": "As a user, I want to set a due date for tasks to manage deadlines.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Assign Priority",
+        "description": "As a user, I want to assign priority (high/medium/low) to tasks to focus on important items.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Mark Complete",
+        "description": "As a user, I want to mark tasks as complete to track progress.",
+        "priority": "medium"
+      },
+      {
+        "id": "US005",
+        "title": "Delete Task",
+        "description": "As a user, I want to delete tasks to remove unwanted items.",
+        "priority": "medium"
+      },
+      {
+        "id": "US006",
+        "title": "Filter by Priority",
+        "description": "As a user, I want to filter tasks by priority to view high, medium, or low priority items.",
+        "priority": "low"
+      },
+      {
+        "id": "US007",
+        "title": "Sort by Due Date",
+        "description": "As a user, I want to sort tasks by due date to see upcoming deadlines first.",
+        "priority": "low"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nfrom typing import List, Optional\nfrom datetime import date\nfrom enum import Enum\n\napp = FastAPI()\n\nclass Priority(str, Enum):\n    high = \"high\"\n    medium = \"medium\"\n    low = \"low\"\n\nclass Task(BaseModel):\n    id: int\n    title: str\n    due_date: date\n    priority: Priority\n    completed: bool = False\n\ntasks = []\nnext_id = 1\n\n@app.get(\"/tasks\", response_model=List[Task])\ndef get_tasks(priority: Optional[Priority] = None, sort_by_date: bool = False):\n    filtered = tasks\n    if priority:\n        filtered = [t for t in filtered if t.priority == priority]\n    if sort_by_date:\n        filtered = sorted(filtered, key=lambda t: t.due_date)\n    return filtered\n\n@app.post(\"/tasks\", response_model=Task)\ndef create_task(title: str, due_date: date, priority: Priority):\n    global next_id\n    task = Task(id=next_id, title=title, due_date=due_date, priority=priority)\n    tasks.append(task)\n    next_id += 1\n    return task\n\n@app.put(\"/tasks/{task_id}/complete\")\ndef complete_task(task_id: int):\n    for task in tasks:\n        if task.id == task_id:\n            task.completed = True\n            return {\"message\": \"Task marked complete\"}\n    raise HTTPException(status_code=404, detail=\"Task not found\")\n\n@app.delete(\"/tasks/{task_id}\")\ndef delete_task(task_id: int):\n    global tasks\n    tasks = [t for t in tasks if t.id != task_id]\n    return {\"message\": \"Task deleted\"}",
+    "frontend_code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Todo List App</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; }\n        input, select, button { margin: 5px; padding: 8px; }\n        .task { border: 1px solid #ccc; padding: 10px; margin: 5px 0; }\n        .completed { text-decoration: line-through; color: gray; }\n        .high { border-left: 5px solid red; }\n        .medium { border-left: 5px solid orange; }\n        .low { border-left: 5px solid green; }\n    </style>\n</head>\n<body>\n    <h1>Todo List</h1>\n    <div>\n        <input id=\"title\" placeholder=\"Task title\" />\n        <input id=\"dueDate\" type=\"date\" />\n        <select id=\"priority\">\n            <option value=\"high\">High</option>\n            <option value=\"medium\">Medium</option>\n            <option value=\"low\">Low</option>\n        </select>\n        <button onclick=\"addTask()\">Add Task</button>\n    </div>\n    <div>\n        <label>Filter by Priority:</label>\n        <select id=\"filterPriority\" onchange=\"loadTasks()\">\n            <option value=\"\">All</option>\n            <option value=\"high\">High</option>\n            <option value=\"medium\">Medium</option>\n            <option value=\"low\">Low</option>\n        </select>\n        <label><input type=\"checkbox\" id=\"sortByDate\" onchange=\"loadTasks()\"> Sort by Due Date</label>\n    </div>\n    <div id=\"taskList\"></div>\n    <script>\n        const apiUrl = \"http://localhost:8000\";\n        async function loadTasks() {\n            const priority = document.getElementById(\"filterPriority\").value;\n            const sort = document.getElementById(\"sortByDate\").checked;\n            let url = `${apiUrl}/tasks?sort_by_date=${sort}`;\n            if (priority) url += `&priority=${priority}`;\n            const res = await fetch(url);\n            const tasks = await res.json();\n            const list = document.getElementById(\"taskList\");\n            list.innerHTML = tasks.map(task => `\n                <div class=\"task ${task.priority} ${task.completed ? 'completed' : ''}\">\n                    <strong>${task.title}</strong> - Due: ${task.due_date} (${task.priority})\n                    ${!task.completed ? `<button onclick=\"completeTask(${task.id})\">Complete</button>` : ''}\n                    <button onclick=\"deleteTask(${task.id})\">Delete</button>\n                </div>\n            `).join('');\n        }\n        async function addTask() {\n            const title = document.getElementById(\"title\").value;\n            const dueDate = document.getElementById(\"dueDate\").value;\n            const priority = document.getElementById(\"priority\").value;\n            if (!title || !dueDate) return alert(\"Please fill all fields\");\n            await fetch(`${apiUrl}/tasks?title=${encodeURIComponent(title)}&due_date=${dueDate}&priority=${priority}`, {\n                method: \"POST\"\n            });\n            document.getElementById(\"title\").value = \"\";\n            document.getElementById(\"dueDate\").value = \"\";\n            loadTasks();\n        }\n        async function completeTask(id) {\n            await fetch(`${apiUrl}/tasks/${id}/complete`, { method: \"PUT\" });\n            loadTasks();\n        }\n        async function deleteTask(id) {\n            await fetch(`${apiUrl}/tasks/${id}`, { method: \"DELETE\" });\n            loadTasks();\n        }\n        loadTasks();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        input, button, select { margin: 5px; padding: 8px; width: calc(100% - 20px); }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #messages { height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 10px; }
+        #typingIndicator { color: #666; font-style: italic; }
+        #status { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Chat App</h1>
+    <div class="section">
+        <h3>Auth</h3>
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+        <p id="authStatus">Not logged in</p>
+    </div>
+    <div class="section">
+        <h3>Rooms</h3>
+        <input id="roomName" placeholder="Room name">
+        <button onclick="createRoom()">Create Room</button>
+        <button onclick="listRooms()">List Rooms</button>
+        <select id="roomSelect" onchange="joinRoom()">
+            <option value="">Select a room</option>
+        </select>
+        <p id="unreadCount">Unread: 0</p>
+    </div>
+    <div class="section">
+        <h3>Chat</h3>
+        <p id="currentRoom">No room selected</p>
+        <p id="status">Status: offline</p>
+        <input id="messageInput" placeholder="Type message" oninput="sendTyping()">
+        <button onclick="sendMessage()">Send</button>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Upload File</button>
+        <div id="typingIndicator"></div>
+        <div id="messages"></div>
+    </div>
+    <script>
+        let token = '';
+        let currentRoom = null;
+        let ws = null;
+        let unreadCount = 0;
+        const baseUrl = 'http://localhost:8000';
+        
+        async function apiCall(endpoint, method='GET', body=null) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+            try {
+                const res = await fetch(`${baseUrl}${endpoint}`, {
+                    method, headers, body: body ? JSON.stringify(body) : null
+                });
+                return await res.json();
+            } catch (e) {
+                console.error('API call failed:', e);
+                return {};
+            }
+        }
+        
+        async function register() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const res = await apiCall('/api/auth/register', 'POST', { username: user, password: pass });
+            document.getElementById('authStatus').textContent = res.message || 'Registered';
+        }
+        
+        async function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const res = await apiCall('/api/auth/login', 'POST', { username: user, password: pass });
+            token = res.access_token || '';
+            document.getElementById('authStatus').textContent = token ? 'Logged in' : 'Login failed';
+            if (token) connectWebSocket(user);
+        }
+        
+        function connectWebSocket(username) {
+            ws = new WebSocket(`ws://localhost:8000/ws/${username}`);
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'message') {
+                    document.getElementById('messages').innerHTML += `<p><strong>${data.user}:</strong> ${data.content}</p>`;
+                    if (data.room_id != currentRoom) {
+                        unreadCount++;
+                        document.getElementById('unreadCount').textContent = `Unread: ${unreadCount}`;
+                    }
+                } else if (data.type === 'typing') {
+                    document.getElementById('typingIndicator').textContent = `${data.user} is typing...`;
+                    setTimeout(() => document.getElementById('typingIndicator').textContent = '', 1000);
+                } else if (data.type === 'status') {
+                    document.getElementById('status').textContent = `Status: ${data.status}`;
+                }
+            };
+        }
+        
+        async function createRoom() {
+            const name = document.getElementById('roomName').value;
+            const res = await apiCall('/api/rooms', 'POST', { name });
+            alert(res.message || 'Room created');
+            listRooms();
+        }
+        
+        async function listRooms() {
+            const res = await apiCall('/api/rooms');
+            const select = document.getElementById('roomSelect');
+            select.innerHTML = '<option value="">Select a room</option>';
+            res.forEach(r => {
+                const option = document.createElement('option');
+                option.value = r.id;
+                option.textContent = r.name;
+                select.appendChild(option);
+            });
+        }
+        
+        async function joinRoom() {
+            const roomId = document.getElementById('roomSelect').value;
+            if (!roomId) return;
+            const res = await apiCall(`/api/rooms/${roomId}/join`, 'POST');
+            currentRoom = roomId;
+            document.getElementById('currentRoom').textContent = `Room: ${roomId}`;
+            loadMessages(roomId);
+            unreadCount = 0;
+            document.getElementById('unreadCount').textContent = 'Unread: 0';
+        }
+        
+        async function loadMessages(roomId) {
+            const res = await apiCall(`/api/rooms/${roomId}/messages`);
+            document.getElementById('messages').innerHTML = res.map(m => `<p><strong>${m.user_id}:</strong> ${m.content}</p>`).join('');
+        }
+        
+        function sendTyping() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'typing', room_id: currentRoom }));
+            }
+        }
+        
+        async function sendMessage() {
+            if (!currentRoom) return alert('Join a room first');
+            const msg = document.getElementById('messageInput').value;
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'message', room_id: currentRoom, content: msg }));
+            }
+            document.getElementById('messageInput').value = '';
+        }
+        
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('file', file);
+            try {
+                const res = await fetch(`${baseUrl}/api/upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+                alert('File uploaded: ' + data.url);
+            } catch (e) {
+                console.error('Upload failed:', e);
+            }
+        }
+    </script>
+</body>
+</html>

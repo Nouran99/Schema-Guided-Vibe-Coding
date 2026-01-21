@@ -1,0 +1,75 @@
+{
+  "models": [
+    {
+      "name": "City",
+      "fields": [
+        "id: int",
+        "name: str",
+        "country: str",
+        "latitude: float",
+        "longitude: float"
+      ]
+    },
+    {
+      "name": "WeatherData",
+      "fields": [
+        "id: int",
+        "city_id: int",
+        "timestamp: datetime",
+        "temperature: float",
+        "conditions: str",
+        "humidity: int",
+        "wind_speed: float",
+        "icon: str",
+        "unit: str"
+      ]
+    },
+    {
+      "name": "Favorite",
+      "fields": [
+        "id: int",
+        "user_id: int",
+        "city_id: int",
+        "created_at: datetime"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/cities/search",
+      "description": "Search for cities by name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/weather/current",
+      "description": "Get current weather for a city"
+    },
+    {
+      "method": "GET",
+      "path": "/api/weather/forecast",
+      "description": "Get 5-day forecast for a city"
+    },
+    {
+      "method": "POST",
+      "path": "/api/favorites",
+      "description": "Save a city as favorite"
+    },
+    {
+      "method": "GET",
+      "path": "/api/favorites",
+      "description": "Get user's favorite cities"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/favorites/{id}",
+      "description": "Remove a favorite city"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/weather/unit",
+      "description": "Toggle temperature unit preference"
+    }
+  ],
+  "architecture_notes": "Simple weather dashboard with external API integration for weather data, focusing on core user stories. City model stores locations, WeatherData caches current/forecast, Favorite handles user preferences. APIs support search, weather fetch, favorites CRUD, and unit toggle."
+}

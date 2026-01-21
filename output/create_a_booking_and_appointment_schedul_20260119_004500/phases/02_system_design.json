@@ -1,0 +1,80 @@
+{
+  "models": [
+    {
+      "name": "Service",
+      "fields": [
+        "id: int",
+        "name: str",
+        "duration_minutes: int",
+        "description: str"
+      ]
+    },
+    {
+      "name": "AvailabilitySlot",
+      "fields": [
+        "id: int",
+        "start_time: datetime",
+        "end_time: datetime",
+        "service_id: int"
+      ]
+    },
+    {
+      "name": "Customer",
+      "fields": [
+        "id: int",
+        "name: str",
+        "email: str",
+        "phone: str"
+      ]
+    },
+    {
+      "name": "Appointment",
+      "fields": [
+        "id: int",
+        "customer_id: int",
+        "service_id: int",
+        "slot_id: int",
+        "status: str",
+        "created_at: datetime"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/services",
+      "description": "List all services"
+    },
+    {
+      "method": "POST",
+      "path": "/api/availability",
+      "description": "Create availability slots"
+    },
+    {
+      "method": "GET",
+      "path": "/api/availability",
+      "description": "Get available slots"
+    },
+    {
+      "method": "POST",
+      "path": "/api/customers",
+      "description": "Create or get customer"
+    },
+    {
+      "method": "POST",
+      "path": "/api/appointments",
+      "description": "Book appointment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/appointments",
+      "description": "List appointments (calendar view)"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/appointments/{id}",
+      "description": "Update appointment (reschedule/cancel)"
+    }
+  ],
+  "architecture_notes": "Simple REST API with 4 core models. Appointment.slot_id ensures double-booking prevention via unique constraint. Status field handles cancellation. Email reminders triggered by status/time."
+}

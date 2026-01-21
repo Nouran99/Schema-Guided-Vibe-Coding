@@ -1,0 +1,59 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Manage Products",
+      "description": "As a user, I want to add, edit, and delete products so that I can maintain an accurate product catalog.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Track Stock Quantities",
+      "description": "As a user, I want to track stock levels in real-time so that I know current inventory availability.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Manage Suppliers",
+      "description": "As a user, I want to manage supplier details so that I can maintain supplier relationships.",
+      "priority": "medium"
+    },
+    {
+      "id": "US004",
+      "title": "Link Products to Suppliers",
+      "description": "As a user, I want to link products to suppliers so that I know where to reorder items from.",
+      "priority": "medium"
+    },
+    {
+      "id": "US005",
+      "title": "Configure Low Stock Alerts",
+      "description": "As a user, I want to set low stock thresholds so that I receive alerts before running out.",
+      "priority": "high"
+    },
+    {
+      "id": "US006",
+      "title": "Record Sales and Purchases",
+      "description": "As a user, I want to record sales and purchases so that I can track stock movements accurately.",
+      "priority": "high"
+    },
+    {
+      "id": "US007",
+      "title": "Generate Inventory Valuation Report",
+      "description": "As a user, I want to generate an inventory valuation report so that I know the total inventory value.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "View Stock Movement History",
+      "description": "As a user, I want to view stock movement history so that I can audit inventory changes.",
+      "priority": "low"
+    },
+    {
+      "id": "US009",
+      "title": "Search and Filter Products",
+      "description": "As a user, I want to search and filter products so that I can quickly find specific items.",
+      "priority": "medium"
+    }
+  ],
+  "summary": "An inventory management system to track products, stock levels, suppliers, and sales with core features for maintaining inventory accuracy and operational efficiency."
+}

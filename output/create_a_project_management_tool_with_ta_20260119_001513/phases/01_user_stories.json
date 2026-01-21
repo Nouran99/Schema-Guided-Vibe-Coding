@@ -1,0 +1,59 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Create Project",
+      "description": "As a user, I want to create a new project so that I can organize related tasks.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Add Task to Project",
+      "description": "As a user, I want to add tasks to a project so that I can define the work needed.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Assign Task to Team Member",
+      "description": "As a user, I want to assign a task to a team member so that responsibility is clear.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Set Task Deadline",
+      "description": "As a user, I want to set a deadline for a task so that we can track timelines.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Update Task Status",
+      "description": "As a user, I want to update a task's status so that progress is visible.",
+      "priority": "high"
+    },
+    {
+      "id": "US006",
+      "title": "Kanban Board Drag-and-Drop",
+      "description": "As a user, I want to drag and drop tasks on a Kanban board so that I can manage workflow visually.",
+      "priority": "high"
+    },
+    {
+      "id": "US007",
+      "title": "View Project Progress",
+      "description": "As a user, I want to see a progress percentage per project so that I can track completion.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "Filter Tasks by Assignee",
+      "description": "As a user, I want to filter tasks by assignee so that I can see individual workloads.",
+      "priority": "medium"
+    },
+    {
+      "id": "US009",
+      "title": "Highlight Overdue Tasks",
+      "description": "As a user, I want overdue tasks highlighted so that I can identify delays quickly.",
+      "priority": "medium"
+    }
+  ],
+  "summary": "A project management tool enabling users to create projects, manage tasks with assignments and deadlines, track progress via a Kanban board, and filter/highlight tasks for efficient workflow oversight."
+}

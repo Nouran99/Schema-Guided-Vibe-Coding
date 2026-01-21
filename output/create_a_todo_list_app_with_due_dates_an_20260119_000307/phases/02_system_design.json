@@ -1,0 +1,43 @@
+{
+  "models": [
+    {
+      "name": "Task",
+      "fields": [
+        "id: int",
+        "title: str",
+        "due_date: datetime",
+        "priority: str",
+        "is_complete: bool",
+        "created_at: datetime"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/tasks",
+      "description": "Get all tasks, filter by priority, sort by due date"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks",
+      "description": "Create a new task with title, due date, priority"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/tasks/{id}",
+      "description": "Update task details (title, due date, priority)"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/tasks/{id}/complete",
+      "description": "Mark a task as complete"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/tasks/{id}",
+      "description": "Delete a task"
+    }
+  ],
+  "architecture_notes": "Simple REST API with single Task model. Priority values: high, medium, low. Filtering and sorting handled via query params on GET /api/tasks."
+}

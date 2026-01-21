@@ -1,0 +1,65 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Create and Manage Courses",
+      "description": "As an instructor, I want to create and manage courses so that I can offer structured learning content.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Organize Lessons in Courses",
+      "description": "As an instructor, I want to organize lessons within courses so that learners can follow a logical sequence.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Support Video/Text Content",
+      "description": "As an instructor, I want to add video and text content to lessons so that I can deliver engaging material.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Create Quizzes with Multiple Types",
+      "description": "As an instructor, I want to create quizzes with multiple question types so that I can assess learner understanding.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Auto-grade Quizzes",
+      "description": "As a learner, I want quizzes to be auto-graded so that I get immediate feedback on my performance.",
+      "priority": "high"
+    },
+    {
+      "id": "US006",
+      "title": "Track Course Progress",
+      "description": "As a learner, I want my progress per course tracked so that I can see how much I've completed.",
+      "priority": "high"
+    },
+    {
+      "id": "US007",
+      "title": "Mark Lessons as Complete",
+      "description": "As a learner, I want to mark lessons as complete so that I can track my advancement.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "Generate Completion Certificates",
+      "description": "As a learner, I want to receive a completion certificate so that I can prove my course achievement.",
+      "priority": "medium"
+    },
+    {
+      "id": "US009",
+      "title": "Enroll in Courses",
+      "description": "As a learner, I want to enroll in courses so that I can access and start learning.",
+      "priority": "high"
+    },
+    {
+      "id": "US010",
+      "title": "View Dashboard with Progress",
+      "description": "As a learner, I want a dashboard showing enrolled courses and progress so that I can manage my learning.",
+      "priority": "high"
+    }
+  ],
+  "summary": "Build a minimum viable e-learning platform enabling instructors to create courses with lessons and quizzes, and learners to enroll, track progress, and earn certificates."
+}

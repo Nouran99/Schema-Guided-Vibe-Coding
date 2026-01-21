@@ -1,0 +1,82 @@
+{
+  "models": [
+    {
+      "name": "Product",
+      "fields": [
+        "id: int",
+        "name: str",
+        "description: str",
+        "unit_price: float",
+        "low_stock_threshold: int",
+        "current_stock: int",
+        "primary_supplier_id: int",
+        "created_at: datetime",
+        "updated_at: datetime"
+      ]
+    },
+    {
+      "name": "Supplier",
+      "fields": [
+        "id: int",
+        "name: str",
+        "contact_info: str",
+        "created_at: datetime"
+      ]
+    },
+    {
+      "name": "StockMovement",
+      "fields": [
+        "id: int",
+        "product_id: int",
+        "movement_type: str",
+        "quantity: int",
+        "supplier_id: int",
+        "notes: str",
+        "created_at: datetime"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/products",
+      "description": "Get products with search/filter"
+    },
+    {
+      "method": "POST",
+      "path": "/api/products",
+      "description": "Create new product"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/products/{id}",
+      "description": "Update product"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/products/{id}",
+      "description": "Delete product"
+    },
+    {
+      "method": "GET",
+      "path": "/api/suppliers",
+      "description": "Get all suppliers"
+    },
+    {
+      "method": "POST",
+      "path": "/api/suppliers",
+      "description": "Create new supplier"
+    },
+    {
+      "method": "GET",
+      "path": "/api/stock_movements",
+      "description": "Get stock movement history"
+    },
+    {
+      "method": "POST",
+      "path": "/api/stock_movements",
+      "description": "Record stock movement"
+    }
+  ],
+  "architecture_notes": "Added primary_supplier_id to Product for direct linking (US004). Added current_stock to Product for real-time tracking. Added GET /stock_movements for history (US008). StockMovement tracks all inventory changes. Low stock alerts via threshold comparison."
+}

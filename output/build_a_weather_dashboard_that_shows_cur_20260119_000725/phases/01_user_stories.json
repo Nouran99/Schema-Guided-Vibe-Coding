@@ -1,0 +1,53 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Search for a City",
+      "description": "As a user, I want to search for a city by name so that I can view its weather.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "View Current Weather",
+      "description": "As a user, I want to see the current temperature and conditions so that I know what to wear.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "View Weather Details",
+      "description": "As a user, I want to see humidity and wind speed so that I can plan my activities.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "View 5-Day Forecast",
+      "description": "As a user, I want to see a 5-day forecast so that I can plan for the week.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "See Weather Icons",
+      "description": "As a user, I want to see weather icons so that I can quickly understand conditions.",
+      "priority": "medium"
+    },
+    {
+      "id": "US006",
+      "title": "Toggle Temperature Units",
+      "description": "As a user, I want to toggle between Celsius and Fahrenheit so that I can use my preferred unit.",
+      "priority": "medium"
+    },
+    {
+      "id": "US007",
+      "title": "Save Favorite Locations",
+      "description": "As a user, I want to save favorite locations so that I can quickly access their weather.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "View Saved Favorites",
+      "description": "As a user, I want to view my saved favorite locations so that I can check their weather easily.",
+      "priority": "low"
+    }
+  ],
+  "summary": "A weather dashboard providing current conditions and a 5-day forecast with core features including search, detailed metrics, visual icons, unit conversion, and favorite location management."
+}

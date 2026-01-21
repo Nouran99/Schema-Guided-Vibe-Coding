@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f0f0f0; }
+        .clock { font-size: 3em; margin: 20px; padding: 20px; background: white; border-radius: 10px; display: inline-block; }
+        .controls { margin: 20px; }
+        select, button { font-size: 1em; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Digital Clock</h1>
+    <div class="clock" id="time">Loading...</div>
+    <div class="controls">
+        <select id="timezone">
+            <option value="">Loading timezones...</option>
+        </select>
+        <button id="toggleFormat">Switch to 12-hour</button>
+    </div>
+    <script>
+        let is24Hour = true;
+        let currentTimezone = '';
+        const timeEl = document.getElementById('time');
+        const timezoneSelect = document.getElementById('timezone');
+        const toggleBtn = document.getElementById('toggleFormat');
+        
+        function loadTimezones() {
+            fetch('/api/timezones')
+                .then(res => res.json())
+                .then(data => {
+                    timezoneSelect.innerHTML = '';
+                    data.forEach(tz => {
+                        const option = document.createElement('option');
+                        option.value = tz.value;
+                        option.textContent = tz.label;
+                        timezoneSelect.appendChild(option);
+                    });
+                    loadUserSettings();
+                })
+                .catch(() => timezoneSelect.innerHTML = '<option value="">Error loading timezones</option>');
+        }
+        
+        function loadUserSettings() {
+            fetch('/api/user-settings')
+                .then(res => res.json())
+                .then(settings => {
+                    if (settings.timezone) {
+                        timezoneSelect.value = settings.timezone;
+                        currentTimezone = settings.timezone;
+                    }
+                    if (settings.hour_format === '12') {
+                        is24Hour = false;
+                        toggleBtn.textContent = 'Switch to 24-hour';
+                    }
+                    updateTime();
+                })
+                .catch(() => updateTime());
+        }
+        
+        function updateTime() {
+            const params = new URLSearchParams();
+            if (timezoneSelect.value) params.append('timezone', timezoneSelect.value);
+            params.append('hour_format', is24Hour ? '24' : '12');
+            
+            fetch(`/api/current-time?${params}`)
+                .then(res => res.json())
+                .then(data => {
+                    timeEl.textContent = data.time;
+                })
+                .catch(() => timeEl.textContent = 'Error fetching time');
+        }
+        
+        function saveUserSettings() {
+            const settings = {
+                timezone: timezoneSelect.value,
+                hour_format: is24Hour ? '24' : '12'
+            };
+            
+            fetch('/api/user-settings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(settings)
+            }).catch(() => console.log('Failed to save settings'));
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            is24Hour = !is24Hour;
+            toggleBtn.textContent = is24Hour ? 'Switch to 12-hour' : 'Switch to 24-hour';
+            updateTime();
+            saveUserSettings();
+        });
+        
+        timezoneSelect.addEventListener('change', () => {
+            updateTime();
+            saveUserSettings();
+        });
+        
+        window.onload = () => {
+            loadTimezones();
+            setInterval(updateTime, 1000);
+        };
+    </script>
+</body>
+</html>

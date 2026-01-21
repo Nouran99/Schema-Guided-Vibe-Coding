@@ -1,0 +1,67 @@
+{
+  "success": true,
+  "vibe_prompt": "Create a project management tool with tasks, team members, deadlines, progress tracking, and a kanban board view, which sould have minimum features : create projects, add tasks to projects, assign tasks to team members, set deadlines, track task status (todo/in-progress/done), kanban board drag-and-drop interface, progress percentage per project, filter tasks by assignee, overdue task highlighting",
+  "project_dir": "output\\baseline_create_a_project_management_to_20260119_001917",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Create Project",
+        "description": "As a user, I want to create a project with a name and description so that I can organize tasks.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Add Task",
+        "description": "As a user, I want to add tasks to a project with a title and description to track work items.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Assign Task",
+        "description": "As a user, I want to assign tasks to team members to delegate responsibilities.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Set Deadline",
+        "description": "As a user, I want to set deadlines for tasks to manage timelines.",
+        "priority": "high"
+      },
+      {
+        "id": "US005",
+        "title": "Update Task Status",
+        "description": "As a user, I want to update task status (todo/in-progress/done) to track progress.",
+        "priority": "high"
+      },
+      {
+        "id": "US006",
+        "title": "Kanban Board",
+        "description": "As a user, I want a kanban board view with drag-and-drop to visualize and organize tasks by status.",
+        "priority": "high"
+      },
+      {
+        "id": "US007",
+        "title": "Progress Tracking",
+        "description": "As a user, I want to see progress percentage per project based on completed tasks.",
+        "priority": "medium"
+      },
+      {
+        "id": "US008",
+        "title": "Filter Tasks",
+        "description": "As a user, I want to filter tasks by assignee to focus on specific team members' work.",
+        "priority": "medium"
+      },
+      {
+        "id": "US009",
+        "title": "Overdue Highlighting",
+        "description": "As a user, I want overdue tasks highlighted to quickly identify delays.",
+        "priority": "medium"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nfrom typing import List, Optional\nfrom datetime import date\nfrom uuid import uuid4\n\napp = FastAPI()\n\nclass Task(BaseModel):\n    id: str\n    title: str\n    description: str\n    project_id: str\n    assignee: Optional[str] = None\n    deadline: Optional[date] = None\n    status: str = \"todo\"\n\nclass Project(BaseModel):\n    id: str\n    name: str\n    description: str\n    tasks: List[str] = []\n\ndb_projects = {}\ndb_tasks = {}\n\n@app.post(\"/projects/\")\ndef create_project(name: str, description: str):\n    project_id = str(uuid4())\n    db_projects[project_id] = Project(id=project_id, name=name, description=description)\n    return {\"id\": project_id}\n\n@app.post(\"/tasks/\")\ndef create_task(title: str, description: str, project_id: str):\n    if project_id not in db_projects:\n        raise HTTPException(status_code=404, detail=\"Project not found\")\n    task_id = str(uuid4())\n    task = Task(id=task_id, title=title, description=description, project_id=project_id)\n    db_tasks[task_id] = task\n    db_projects[project_id].tasks.append(task_id)\n    return {\"id\": task_id}\n\n@app.put(\"/tasks/{task_id}/assign\")\ndef assign_task(task_id: str, assignee: str):\n    if task_id not in db_tasks:\n        raise HTTPException(status_code=404, detail=\"Task not found\")\n    db_tasks[task_id].assignee = assignee\n    return {\"message\": \"Task assigned\"}\n\n@app.put(\"/tasks/{task_id}/status\")\ndef update_status(task_id: str, status: str):\n    if task_id not in db_tasks:\n        raise HTTPException(status_code=404, detail=\"Task not found\")\n    db_tasks[task_id].status = status\n    return {\"message\": \"Status updated\"}\n\n@app.get(\"/projects/{project_id}/progress\")\ndef get_progress(project_id: str):\n    if project_id not in db_projects:\n        raise HTTPException(status_code=404, detail=\"Project not found\")\n    tasks = [db_tasks[tid] for tid in db_projects[project_id].tasks if tid in db_tasks]\n    done_count = sum(1 for t in tasks if t.status == \"done\")\n    total = len(tasks)\n    progress = (done_count / total * 100) if total > 0 else 0\n    return {\"progress\": progress}\n",
+    "frontend_code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Project Management Tool</title>\n    <style>\n        body { font-family: Arial, sans-serif; margin: 20px; }\n        .kanban { display: flex; gap: 20px; }\n        .column { flex: 1; border: 1px solid #ccc; padding: 10px; border-radius: 5px; }\n        .task { background: #f0f0f0; margin: 5px 0; padding: 10px; border-radius: 3px; cursor: move; }\n        .overdue { border-left: 5px solid red; }\n        .filter { margin-bottom: 20px; }\n    </style>\n    <script>\n        let tasks = [\n            {id: \"1\", title: \"Design UI\", project: \"Project A\", assignee: \"Alice\", deadline: \"2024-12-01\", status: \"todo\"},\n            {id: \"2\", title: \"Backend API\", project: \"Project A\", assignee: \"Bob\", deadline: \"2024-11-20\", status: \"in-progress\"},\n            {id: \"3\", title: \"Testing\", project: \"Project B\", assignee: \"Alice\", deadline: \"2024-11-15\", status: \"done\"}\n        ];\n        \n        function renderKanban() {\n            const columns = {\n                todo: document.getElementById('todo'),\n                inProgress: document.getElementById('in-progress'),\n                done: document.getElementById('done')\n            };\n            Object.values(columns).forEach(col => col.innerHTML = '');\n            const filter = document.getElementById('assigneeFilter').value;\n            const today = new Date().toISOString().split('T')[0];\n            \n            tasks.forEach(task => {\n                if (filter && task.assignee !== filter) return;\n                const taskEl = document.createElement('div');\n                taskEl.className = 'task';\n                if (task.deadline < today && task.status !== 'done') taskEl.classList.add('overdue');\n                taskEl.draggable = true;\n                taskEl.id = task.id;\n                taskEl.innerHTML = `<strong>${task.title}</strong><br>Assignee: ${task.assignee}<br>Deadline: ${task.deadline}`;\n                taskEl.ondragstart = (e) => e.dataTransfer.setData('text/plain', task.id);\n                columns[task.status].appendChild(taskEl);\n            });\n        }\n        \n        function allowDrop(e) {\n            e.preventDefault();\n        }\n        \n        function drop(e, newStatus) {\n            e.preventDefault();\n            const taskId = e.dataTransfer.getData('text/plain');\n            const task = tasks.find(t => t.id === taskId);\n            if (task) {\n                task.status = newStatus;\n                renderKanban();\n            }\n        }\n        \n        function addTask() {\n            const title = prompt('Task title:');\n            if (title) {\n                tasks.push({\n                    id: Date.now().toString(),\n                    title: title,\n                    project: \"Project A\",\n                    assignee: \"Unassigned\",\n                    deadline: \"2024-12-31\",\n                    status: \"todo\"\n                });\n                renderKanban();\n            }\n        }\n        \n        window.onload = renderKanban;\n    </script>\n</head>\n<body>\n    <h1>Project Management Tool</h1>\n    <div class=\"filter\">\n        <label>Filter by Assignee: </label>\n        <select id=\"assigneeFilter\" onchange=\"renderKanban()\">\n            <option value=\"\">All</option>\n            <option value=\"Alice\">Alice</option>\n            <option value=\"Bob\">Bob</option>\n        </select>\n        <button onclick=\"addTask()\">Add Task</button>\n    </div>\n    <div class=\"kanban\">\n        <div class=\"column\" ondrop=\"drop(event, 'todo')\" ondragover=\"allowDrop(event)\">\n            <h2>To Do</h2>\n            <div id=\"todo\"></div>\n        </div>\n        <div class=\"column\" ondrop=\"drop(event, 'in-progress')\" ondragover=\"allowDrop(event)\">\n            <h2>In Progress</h2>\n            <div id=\"in-progress\"></div>\n        </div>\n        <div class=\"column\" ondrop=\"drop(event, 'done')\" ondragover=\"allowDrop(event)\">\n            <h2>Done</h2>\n            <div id=\"done\"></div>\n        </div>\n    </div>\n    <div>\n        <h3>Progress: Project A</h3>\n        <p>Calculated via backend API (see code).</p>\n    </div>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

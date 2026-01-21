@@ -1,0 +1,73 @@
+{
+  "success": true,
+  "vibe_prompt": "Build an inventory management system with products, stock levels, suppliers, low-stock alerts, and sales tracking, which sould have minimum features : add/edit/delete products, track stock quantities, manage suppliers, link products to suppliers, low stock alerts (configurable threshold), record sales/stock out, record purchases/stock in, inventory valuation report, stock movement history, search and filter products",
+  "project_dir": "output\\baseline_build_an_inventory_management_20260119_003029",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Add/Edit/Delete Products",
+        "description": "As a user, I want to add, edit, and delete products so I can manage the inventory items.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Track Stock Quantities",
+        "description": "As a user, I want to track stock quantities for each product so I know current availability.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Manage Suppliers",
+        "description": "As a user, I want to add, edit, and delete suppliers to maintain supplier information.",
+        "priority": "medium"
+      },
+      {
+        "id": "US004",
+        "title": "Link Products to Suppliers",
+        "description": "As a user, I want to link products to suppliers so I know where to reorder from.",
+        "priority": "medium"
+      },
+      {
+        "id": "US005",
+        "title": "Low Stock Alerts",
+        "description": "As a user, I want to receive alerts when stock falls below a configurable threshold so I can reorder in time.",
+        "priority": "high"
+      },
+      {
+        "id": "US006",
+        "title": "Record Sales/Stock Out",
+        "description": "As a user, I want to record sales to reduce stock and track revenue.",
+        "priority": "high"
+      },
+      {
+        "id": "US007",
+        "title": "Record Purchases/Stock In",
+        "description": "As a user, I want to record purchases to increase stock and track costs.",
+        "priority": "high"
+      },
+      {
+        "id": "US008",
+        "title": "Inventory Valuation Report",
+        "description": "As a user, I want to generate a report showing total inventory value based on cost and stock.",
+        "priority": "medium"
+      },
+      {
+        "id": "US009",
+        "title": "Stock Movement History",
+        "description": "As a user, I want to view a history of stock movements (in/out) for auditing.",
+        "priority": "low"
+      },
+      {
+        "id": "US010",
+        "title": "Search and Filter Products",
+        "description": "As a user, I want to search and filter products by name, category, or supplier to find items quickly.",
+        "priority": "medium"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nfrom typing import List, Optional\nfrom datetime import datetime\n\napp = FastAPI()\n\nclass Product(BaseModel):\n    id: int\n    name: str\n    category: str\n    stock: int\n    cost: float\n    supplier_id: Optional[int] = None\n\nclass Supplier(BaseModel):\n    id: int\n    name: str\n    contact: str\n\nclass Movement(BaseModel):\n    id: int\n    product_id: int\n    type: str  # 'in' or 'out'\n    quantity: int\n    date: datetime\n\nproducts_db = []\nsuppliers_db = []\nmovements_db = []\nalert_threshold = 10\n\n@app.get('/products')\ndef get_products():\n    return products_db\n\n@app.post('/products')\ndef add_product(product: Product):\n    products_db.append(product)\n    return product\n\n@app.put('/products/{id}')\ndef update_product(id: int, product: Product):\n    for i, p in enumerate(products_db):\n        if p.id == id:\n            products_db[i] = product\n            return product\n    raise HTTPException(status_code=404, detail='Product not found')\n\n@app.delete('/products/{id}')\ndef delete_product(id: int):\n    global products_db\n    products_db = [p for p in products_db if p.id != id]\n    return {'message': 'Product deleted'}\n\n@app.post('/sales')\ndef record_sale(product_id: int, quantity: int):\n    for p in products_db:\n        if p.id == product_id:\n            p.stock -= quantity\n            movements_db.append(Movement(id=len(movements_db)+1, product_id=product_id, type='out', quantity=quantity, date=datetime.now()))\n            return p\n    raise HTTPException(status_code=404, detail='Product not found')\n\n@app.get('/alerts')\ndef get_alerts():\n    return [p for p in products_db if p.stock < alert_threshold]\n\n@app.get('/valuation')\ndef get_valuation():\n    total = sum(p.cost * p.stock for p in products_db)\n    return {'total_value': total}\n",
+    "frontend_code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Inventory Management</title>\n    <style>\n        body { font-family: Arial, sans-serif; margin: 20px; }\n        .section { margin-bottom: 30px; }\n        table { border-collapse: collapse; width: 100%; }\n        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n        .alert { color: red; }\n    </style>\n</head>\n<body>\n    <h1>Inventory Management System</h1>\n    \n    <div class=\"section\">\n        <h2>Add Product</h2>\n        <input id=\"name\" placeholder=\"Name\">\n        <input id=\"category\" placeholder=\"Category\">\n        <input id=\"stock\" type=\"number\" placeholder=\"Stock\">\n        <input id=\"cost\" type=\"number\" placeholder=\"Cost\">\n        <button onclick=\"addProduct()\">Add</button>\n    </div>\n    \n    <div class=\"section\">\n        <h2>Products</h2>\n        <table id=\"productsTable\">\n            <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Stock</th><th>Cost</th><th>Actions</th></tr></thead>\n            <tbody></tbody>\n        </table>\n    </div>\n    \n    <div class=\"section\">\n        <h2>Low Stock Alerts</h2>\n        <div id=\"alerts\"></div>\n    </div>\n    \n    <div class=\"section\">\n        <h2>Record Sale</h2>\n        <input id=\"saleId\" placeholder=\"Product ID\">\n        <input id=\"saleQty\" type=\"number\" placeholder=\"Quantity\">\n        <button onclick=\"recordSale()\">Record Sale</button>\n    </div>\n    \n    <div class=\"section\">\n        <h2>Inventory Valuation</h2>\n        <button onclick=\"getValuation()\">Calculate</button>\n        <div id=\"valuation\"></div>\n    </div>\n    \n    <script>\n        async function fetchProducts() {\n            const res = await fetch('/products');\n            const products = await res.json();\n            const table = document.querySelector('#productsTable tbody');\n            table.innerHTML = '';\n            products.forEach(p => {\n                const row = table.insertRow();\n                row.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>${p.category}</td><td>${p.stock}</td><td>${p.cost}</td><td><button onclick=\"deleteProduct(${p.id})\">Delete</button></td>`;\n            });\n            fetchAlerts();\n        }\n        \n        async function addProduct() {\n            const product = {\n                id: Date.now(),\n                name: document.getElementById('name').value,\n                category: document.getElementById('category').value,\n                stock: parseInt(document.getElementById('stock').value),\n                cost: parseFloat(document.getElementById('cost').value)\n            };\n            await fetch('/products', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(product) });\n            fetchProducts();\n        }\n        \n        async function deleteProduct(id) {\n            await fetch(`/products/${id}`, { method: 'DELETE' });\n            fetchProducts();\n        }\n        \n        async function fetchAlerts() {\n            const res = await fetch('/alerts');\n            const alerts = await res.json();\n            const div = document.getElementById('alerts');\n            div.innerHTML = alerts.length ? alerts.map(a => `<p class=\"alert\">${a.name} low stock: ${a.stock}</p>`).join('') : '<p>No alerts</p>';\n        }\n        \n        async function recordSale() {\n            const id = document.getElementById('saleId').value;\n            const qty = document.getElementById('saleQty').value;\n            await fetch(`/sales?product_id=${id}&quantity=${qty}`, { method: 'POST' });\n            fetchProducts();\n        }\n        \n        async function getValuation() {\n            const res = await fetch('/valuation');\n            const data = await res.json();\n            document.getElementById('valuation').innerHTML = `Total Value: $${data.total_value}`;\n        }\n        \n        fetchProducts();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

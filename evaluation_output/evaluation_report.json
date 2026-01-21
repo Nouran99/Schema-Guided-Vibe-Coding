@@ -1,0 +1,3592 @@
+{
+  "experiment_date": "2026-01-19T00:48:37.870214",
+  "evaluation_date": "2026-01-19T00:54:50.075133",
+  "total_prompts": 10,
+  "vibe_prompts_version": "2.0",
+  "prompt_evaluations": [
+    {
+      "prompt_id": "VP01",
+      "prompt": "Build a simple calculator, which sould have minimum features : basic arithmetic operations (add, sub...",
+      "complexity": "easy",
+      "timestamp": "2026-01-19T00:49:52.238391",
+      "expected_features": {
+        "prompt_id": "VP01",
+        "prompt_description": "A basic calculator with four operations",
+        "complexity": "easy",
+        "total_expected_features": 4,
+        "expected_features_list": [
+          "basic arithmetic operations (add, subtract, multiply, divide)",
+          "number input",
+          "display result",
+          "clear function"
+        ],
+        "pentagon": {
+          "implemented_count": 4,
+          "total": 4,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "basic arithmetic operations (add, subtract, multiply, divide)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend handles all four operations in calculate() endpoint with proper logic for each. Frontend provides dropdown with all operations.",
+              "method": "llm"
+            },
+            {
+              "feature": "number input",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has two number input fields with type='number' and step='any' to accept integers and decimals. Backend accepts float operands.",
+              "method": "llm"
+            },
+            {
+              "feature": "display result",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has result div that updates with calculation results or error messages after API call. Test report confirms result display works.",
+              "method": "llm"
+            },
+            {
+              "feature": "clear function",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has clear button that calls clearAll() to reset input fields and result display. Backend also has DELETE endpoints for clearing calculation history.",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 4,
+          "total": 4,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "basic arithmetic operations (add, subtract, multiply, divide)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend uses eval() to process expressions containing +, -, *, / operators. Frontend has buttons for all four operators.",
+              "method": "llm"
+            },
+            {
+              "feature": "number input",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has buttons for digits 0-9 and decimal point, with appendToDisplay() function to build expressions.",
+              "method": "llm"
+            },
+            {
+              "feature": "display result",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Input field with id='display' shows both input expression and calculated result after API call.",
+              "method": "llm"
+            },
+            {
+              "feature": "clear function",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Clear button (C) calls clearDisplay() function that resets the display field to empty string.",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 3
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 7,
+            "medium": 2
+          }
+        },
+        "baseline": {
+          "count": 4,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 1,
+        "models": [
+          {
+            "name": "Calculation",
+            "fields_count": 6
+          }
+        ],
+        "endpoints_count": 5,
+        "endpoint_methods": {
+          "POST": 1,
+          "GET": 2,
+          "DELETE": 2
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 344
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 88.33,
+          "phases_succeeded": 5,
+          "time_per_phase": 17.67
+        },
+        "baseline": {
+          "execution_time_seconds": 37.01
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 51.32,
+          "pentagon_slower_by_factor": 2.39
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 8,
+          "readability": 9,
+          "api_design": 9,
+          "error_handling": 9,
+          "notes": "Well-structured with clear separation of concerns. Uses Pydantic models for validation, proper RESTful endpoints with CRUD operations, and comprehensive error handling. Frontend has clean UI with good user feedback. Minor deduction for in-memory storage and lack of input validation beyond division by zero.",
+          "average": 8.75
+        },
+        "baseline": {
+          "code_structure": 4,
+          "readability": 6,
+          "api_design": 3,
+          "error_handling": 2,
+          "notes": "Extremely minimal implementation with critical security flaw (eval() on user input). No input validation, no proper error handling, single endpoint with poor REST design. Frontend has better UI interaction but backend is dangerously insecure. Basic structure exists but lacks essential safety features.",
+          "average": 3.75
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.875,
+          "composite_score": 0.975
+        },
+        "baseline": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.375,
+          "composite_score": 0.875
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.1,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP02",
+      "prompt": "Create a digital clock with timezone selection, which sould have minimum features : display current ...",
+      "complexity": "easy",
+      "timestamp": "2026-01-19T00:50:15.850445",
+      "expected_features": {
+        "prompt_id": "VP02",
+        "prompt_description": "A simple digital clock with timezone support",
+        "complexity": "easy",
+        "total_expected_features": 4,
+        "expected_features_list": [
+          "display current time (hours, minutes, seconds)",
+          "select from multiple timezones",
+          "12/24 hour format toggle",
+          "auto-update every second"
+        ],
+        "pentagon": {
+          "implemented_count": 4,
+          "total": 4,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "display current time (hours, minutes, seconds)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend returns hour, minute, second fields; frontend displays formatted time string with all three components.",
+              "method": "llm"
+            },
+            {
+              "feature": "select from multiple timezones",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend provides TIMEZONES list with 5 options; frontend populates dropdown and sends selected timezone to API.",
+              "method": "llm"
+            },
+            {
+              "feature": "12/24 hour format toggle",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has toggle button that switches between formats; backend processes hour_format parameter and formats time accordingly.",
+              "method": "llm"
+            },
+            {
+              "feature": "auto-update every second",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend uses setInterval(updateTime, 1000) to poll /api/current-time endpoint every second.",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 4,
+          "total": 4,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "display current time (hours, minutes, seconds)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend returns hours, minutes, seconds; frontend displays them in HH:MM:SS format and updates every second",
+              "method": "llm"
+            },
+            {
+              "feature": "select from multiple timezones",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Frontend has dropdown with 4 hardcoded timezones, backend supports any pytz timezone via API but frontend doesn't use the /timezones endpoint to show all available timezones",
+              "method": "llm"
+            },
+            {
+              "feature": "12/24 hour format toggle",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Toggle button switches between 12-hour (with AM/PM) and 24-hour formats, updating display accordingly",
+              "method": "llm"
+            },
+            {
+              "feature": "auto-update every second",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "setInterval(fetchTime, 1000) calls the time API every second to update the display",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 3
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 7,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 3,
+            "medium": 2,
+            "low": 2
+          }
+        },
+        "baseline": {
+          "count": 4,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 3,
+            "medium": 1
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 2,
+        "models": [
+          {
+            "name": "UserSettings",
+            "fields_count": 5
+          },
+          {
+            "name": "Timezone",
+            "fields_count": 4
+          }
+        ],
+        "endpoints_count": 6,
+        "endpoint_methods": {
+          "GET": 3,
+          "POST": 1,
+          "PUT": 2
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 235
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 168.8,
+          "phases_succeeded": 5,
+          "time_per_phase": 33.76
+        },
+        "baseline": {
+          "execution_time_seconds": 27.45
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 141.35,
+          "pentagon_slower_by_factor": 6.15
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 8,
+          "readability": 7,
+          "api_design": 8,
+          "error_handling": 6,
+          "notes": "Good separation of concerns with user settings management. API endpoints are well-organized. Missing proper validation for hour_format values. User settings stored in memory without persistence. Frontend incomplete (cut off).",
+          "average": 7.25
+        },
+        "baseline": {
+          "code_structure": 5,
+          "readability": 6,
+          "api_design": 4,
+          "error_handling": 3,
+          "notes": "Minimalist implementation meets basic requirements. Poor API design (timezone in URL path). No user settings persistence. Limited timezone list. Frontend has hardcoded timezones. Error handling returns 200 even on errors. No input validation.",
+          "average": 4.5
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.725,
+          "composite_score": 0.945
+        },
+        "baseline": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.45,
+          "composite_score": 0.89
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.055,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP03",
+      "prompt": "Create a todo list app with due dates and priority levels, which sould have minimum features : add t...",
+      "complexity": "medium",
+      "timestamp": "2026-01-19T00:50:36.019635",
+      "expected_features": {
+        "prompt_id": "VP03",
+        "prompt_description": "Todo app with scheduling and prioritization",
+        "complexity": "medium",
+        "total_expected_features": 7,
+        "expected_features_list": [
+          "add tasks with title",
+          "set due date for tasks",
+          "assign priority (high/medium/low)",
+          "mark tasks complete",
+          "delete tasks",
+          "filter by priority",
+          "sort by due date"
+        ],
+        "pentagon": {
+          "implemented_count": 7,
+          "total": 7,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "add tasks with title",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/tasks endpoint accepts title field, frontend form includes title input with validation",
+              "method": "llm"
+            },
+            {
+              "feature": "set due date for tasks",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Task model includes due_date field, frontend has date input, both create and update endpoints handle due_date",
+              "method": "llm"
+            },
+            {
+              "feature": "assign priority (high/medium/low)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Priority field with validation for high/medium/low values, frontend dropdown with all three options",
+              "method": "llm"
+            },
+            {
+              "feature": "mark tasks complete",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "PATCH /api/tasks/{id}/complete endpoint, frontend toggle button with Complete/Undo functionality",
+              "method": "llm"
+            },
+            {
+              "feature": "delete tasks",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "DELETE /api/tasks/{id} endpoint, frontend delete button with confirmation via API call",
+              "method": "llm"
+            },
+            {
+              "feature": "filter by priority",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/tasks accepts priority query parameter, frontend has priority filter dropdown",
+              "method": "llm"
+            },
+            {
+              "feature": "sort by due date",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/tasks accepts sort=due_date parameter, frontend has 'Sort by Due Date' button to toggle sorting",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 7,
+          "total": 7,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "add tasks with title",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST endpoint /tasks accepts title parameter; frontend has input field for title and addTask() function",
+              "method": "llm"
+            },
+            {
+              "feature": "set due date for tasks",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST endpoint accepts due_date parameter; frontend has date input field and includes it in API call",
+              "method": "llm"
+            },
+            {
+              "feature": "assign priority (high/medium/low)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Priority Enum defined; POST endpoint accepts priority parameter; frontend has priority dropdown",
+              "method": "llm"
+            },
+            {
+              "feature": "mark tasks complete",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "PUT endpoint /tasks/{task_id}/complete sets completed=true; frontend has Complete button that calls this endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "delete tasks",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "DELETE endpoint /tasks/{task_id} removes tasks; frontend has Delete button that calls this endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "filter by priority",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /tasks accepts optional priority parameter; frontend has priority filter dropdown that calls loadTasks() with priority parameter",
+              "method": "llm"
+            },
+            {
+              "feature": "sort by due date",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /tasks accepts sort_by_date boolean parameter; frontend has checkbox for sorting that calls loadTasks() with sort parameter",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 5
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 8,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 3,
+            "low": 1
+          }
+        },
+        "baseline": {
+          "count": 7,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 3,
+            "medium": 2,
+            "low": 2
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 1,
+        "models": [
+          {
+            "name": "Task",
+            "fields_count": 6
+          }
+        ],
+        "endpoints_count": 5,
+        "endpoint_methods": {
+          "GET": 1,
+          "POST": 1,
+          "PUT": 1,
+          "PATCH": 1,
+          "DELETE": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 141
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 215.84,
+          "phases_succeeded": 5,
+          "time_per_phase": 43.17
+        },
+        "baseline": {
+          "execution_time_seconds": 42.66
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 173.18,
+          "pentagon_slower_by_factor": 5.06
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 8,
+          "readability": 9,
+          "api_design": 9,
+          "error_handling": 8,
+          "notes": "Well-structured with proper separation of concerns. Uses Pydantic models effectively, includes CORS, UUIDs, and datetime handling. Good validation and error responses. Frontend has clean separation of concerns but incomplete rendering function.",
+          "average": 8.5
+        },
+        "baseline": {
+          "code_structure": 6,
+          "readability": 7,
+          "api_design": 7,
+          "error_handling": 5,
+          "notes": "Simpler but functional structure. Uses Enum for priority validation. Missing key features: no task update endpoint, no partial updates, no created_at timestamp, uses global mutable state without thread safety. Frontend uses inline event handlers and string concatenation which is less maintainable.",
+          "average": 6.25
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.85,
+          "composite_score": 0.97
+        },
+        "baseline": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.625,
+          "composite_score": 0.925
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.045,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP04",
+      "prompt": "Build a weather dashboard that shows current conditions and 5-day forecast, which sould have minimum...",
+      "complexity": "medium",
+      "timestamp": "2026-01-19T00:51:02.734559",
+      "expected_features": {
+        "prompt_id": "VP04",
+        "prompt_description": "Weather app with current conditions and forecast",
+        "complexity": "medium",
+        "total_expected_features": 7,
+        "expected_features_list": [
+          "search by city name",
+          "display current temperature and conditions",
+          "show humidity and wind speed",
+          "5-day forecast display",
+          "weather icons",
+          "unit toggle (Celsius/Fahrenheit)",
+          "save favorite locations"
+        ],
+        "pentagon": {
+          "implemented_count": 7,
+          "total": 7,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "search by city name",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has GET /api/cities/search endpoint, frontend has search input and searchCity() function that calls it",
+              "method": "llm"
+            },
+            {
+              "feature": "display current temperature and conditions",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has GET /api/weather/current endpoint returning temperature and conditions, frontend displays in currentWeather div",
+              "method": "llm"
+            },
+            {
+              "feature": "show humidity and wind speed",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Weather model includes humidity and wind_speed fields, current weather endpoint returns both",
+              "method": "llm"
+            },
+            {
+              "feature": "5-day forecast display",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has GET /api/weather/forecast endpoint returning 5 days, frontend has forecast div and updateDisplay() handles it",
+              "method": "llm"
+            },
+            {
+              "feature": "weather icons",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Weather model includes icon field with emoji icons, both current and forecast endpoints return icons",
+              "method": "llm"
+            },
+            {
+              "feature": "unit toggle (Celsius/Fahrenheit)",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend has PUT /api/weather/unit endpoint and unit_pref variable, frontend has toggleUnit() button and convertTemp() function, but code is truncated before full implementation",
+              "method": "llm"
+            },
+            {
+              "feature": "save favorite locations",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST /api/favorites endpoint, frontend has saveFavorite() function and 'Save Current as Favorite' button",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 7,
+          "total": 7,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "search by city name",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has /weather/{city} endpoint, frontend has search input and searchWeather() function that calls it",
+              "method": "llm"
+            },
+            {
+              "feature": "display current temperature and conditions",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend returns temp and conditions, frontend displayCurrent() shows temperature and conditions",
+              "method": "llm"
+            },
+            {
+              "feature": "show humidity and wind speed",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend returns humidity and wind_speed, frontend displays both in current weather section",
+              "method": "llm"
+            },
+            {
+              "feature": "5-day forecast display",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend /forecast endpoint returns 5 items, but they appear to be 5 time intervals (not necessarily 5 days). Frontend displays them as 'days' but data structure suggests it's extracting first 5 forecast periods from API",
+              "method": "llm"
+            },
+            {
+              "feature": "weather icons",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend returns icon code, frontend displays images from OpenWeatherMap using icon code in both current and forecast",
+              "method": "llm"
+            },
+            {
+              "feature": "unit toggle (Celsius/Fahrenheit)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has toggleUnits() function, units parameter passed to backend, symbol changes between \u00b0C/\u00b0F",
+              "method": "llm"
+            },
+            {
+              "feature": "save favorite locations",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has full CRUD for favorites (GET, POST, DELETE), frontend has addFavorite(), loadFavorites(), and clickable favorites list",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 3
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 8,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 3,
+            "low": 1
+          }
+        },
+        "baseline": {
+          "count": 6,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 3,
+            "medium": 2,
+            "low": 1
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 3,
+        "models": [
+          {
+            "name": "City",
+            "fields_count": 5
+          },
+          {
+            "name": "WeatherData",
+            "fields_count": 9
+          },
+          {
+            "name": "Favorite",
+            "fields_count": 4
+          }
+        ],
+        "endpoints_count": 7,
+        "endpoint_methods": {
+          "GET": 4,
+          "POST": 1,
+          "DELETE": 1,
+          "PUT": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 273
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 207.84,
+          "phases_succeeded": 5,
+          "time_per_phase": 41.57
+        },
+        "baseline": {
+          "execution_time_seconds": 54.8
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 153.04,
+          "pentagon_slower_by_factor": 3.79
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 6,
+          "readability": 7,
+          "api_design": 7,
+          "error_handling": 5,
+          "notes": "Better structure with Pydantic models and separation of concerns. Good naming conventions. API endpoints are logically organized. However, error handling is incomplete (favorites endpoint cut off), uses mock data instead of real API, and lacks proper data persistence.",
+          "average": 6.25
+        },
+        "baseline": {
+          "code_structure": 5,
+          "readability": 6,
+          "api_design": 6,
+          "error_handling": 4,
+          "notes": "Simpler, more direct approach but less organized. Uses real weather API. RESTful endpoints but less consistent naming. Minimal error handling (only basic 404), no input validation, and global mutable state for favorites. Frontend has better error display but backend lacks robustness.",
+          "average": 5.25
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.625,
+          "composite_score": 0.925
+        },
+        "baseline": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.525,
+          "composite_score": 0.905
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.02,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP05",
+      "prompt": "Build a personal finance tracker with expense categories, monthly budgets, and spending analytics wi...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:51:30.768687",
+      "expected_features": {
+        "prompt_id": "VP05",
+        "prompt_description": "Full-featured expense tracker with budgeting and visualization",
+        "complexity": "complex",
+        "total_expected_features": 8,
+        "expected_features_list": [
+          "add income and expenses",
+          "categorize transactions",
+          "set monthly budget per category",
+          "track budget vs actual spending",
+          "visualize spending by category (pie chart)",
+          "show monthly trends (line/bar chart)",
+          "filter by date range",
+          "export data"
+        ],
+        "pentagon": {
+          "implemented_count": 7,
+          "total": 8,
+          "percentage": 87.5,
+          "features_detail": [
+            {
+              "feature": "add income and expenses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/transactions endpoint accepts type field ('income' or 'expense'), frontend has form with type dropdown",
+              "method": "llm"
+            },
+            {
+              "feature": "categorize transactions",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Transaction model has category_id field, frontend category dropdown, categories can be created via POST /api/categories",
+              "method": "llm"
+            },
+            {
+              "feature": "set monthly budget per category",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Category model has budget field, PUT /api/categories/{id} updates budget, frontend has budget input for categories",
+              "method": "llm"
+            },
+            {
+              "feature": "track budget vs actual spending",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/budget-progress endpoint returns spent vs budget per category, frontend displays progress section",
+              "method": "llm"
+            },
+            {
+              "feature": "visualize spending by category (pie chart)",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Pie chart initialized in frontend with Chart.js but code is truncated/incomplete (missing bar chart data and pie chart updates)",
+              "method": "llm"
+            },
+            {
+              "feature": "show monthly trends (line/bar chart)",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Bar chart canvas exists and is initialized but code is truncated/incomplete (missing trend calculation and data aggregation by month)",
+              "method": "llm"
+            },
+            {
+              "feature": "filter by date range",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/transactions accepts start_date and end_date parameters, frontend has date inputs and filter button",
+              "method": "llm"
+            },
+            {
+              "feature": "export data",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No export endpoint or frontend functionality found in provided code",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 7,
+          "total": 8,
+          "percentage": 87.5,
+          "features_detail": [
+            {
+              "feature": "add income and expenses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST endpoint /transactions/ accepts Transaction objects with type 'income' or 'expense', and frontend form allows adding both types",
+              "method": "llm"
+            },
+            {
+              "feature": "categorize transactions",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Transaction model includes category field, and frontend has category input field for categorization",
+              "method": "llm"
+            },
+            {
+              "feature": "set monthly budget per category",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend has Budget model and predefined budgets array, but no API endpoints to create/update budgets from frontend. Frontend lacks UI for setting budgets.",
+              "method": "llm"
+            },
+            {
+              "feature": "track budget vs actual spending",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No API endpoint or frontend logic to compare actual spending against budget limits. Only spending aggregation exists without budget comparison.",
+              "method": "llm"
+            },
+            {
+              "feature": "visualize spending by category (pie chart)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Pie chart created using Chart.js with data from /analytics/spending_by_category endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "show monthly trends (line/bar chart)",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Bar chart exists but shows category spending (same as pie chart), not monthly trends over time. No aggregation by month or time-based trend analysis.",
+              "method": "llm"
+            },
+            {
+              "feature": "filter by date range",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /transactions/ accepts start_date and end_date parameters, and frontend provides date inputs with filter button",
+              "method": "llm"
+            },
+            {
+              "feature": "export data",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /export/ endpoint returns CSV file with all transactions, and frontend has export button",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 5
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 8,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 3,
+            "low": 1
+          }
+        },
+        "baseline": {
+          "count": 8,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 3,
+            "low": 1
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 2,
+        "models": [
+          {
+            "name": "Transaction",
+            "fields_count": 6
+          },
+          {
+            "name": "Category",
+            "fields_count": 3
+          }
+        ],
+        "endpoints_count": 8,
+        "endpoint_methods": {
+          "GET": 3,
+          "POST": 2,
+          "PUT": 2,
+          "DELETE": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 188
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 156.93,
+          "phases_succeeded": 5,
+          "time_per_phase": 31.39
+        },
+        "baseline": {
+          "execution_time_seconds": 48.53
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 108.4,
+          "pentagon_slower_by_factor": 3.23
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 7,
+          "readability": 8,
+          "api_design": 8,
+          "error_handling": 6,
+          "notes": "Better organized with separate models for Category/Transaction. Good API endpoint naming. Missing validation for category existence in transactions. In-memory storage limits scalability. Frontend incomplete (cut off mid-function).",
+          "average": 7.25
+        },
+        "baseline": {
+          "code_structure": 5,
+          "readability": 7,
+          "api_design": 6,
+          "error_handling": 3,
+          "notes": "Simpler but less organized - budgets hardcoded, no proper models for categories. Missing PUT/DELETE endpoints. No error handling for invalid data. CSV export is a plus. Frontend more complete but lacks budget management features.",
+          "average": 5.25
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 0.875,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.725,
+          "composite_score": 0.907
+        },
+        "baseline": {
+          "features_score": 0.875,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.525,
+          "composite_score": 0.855
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.052,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP06",
+      "prompt": "Create a project management tool with tasks, team members, deadlines, progress tracking, and a kanba...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:51:58.220103",
+      "expected_features": {
+        "prompt_id": "VP06",
+        "prompt_description": "Project management with kanban board and team collaboration",
+        "complexity": "complex",
+        "total_expected_features": 9,
+        "expected_features_list": [
+          "create projects",
+          "add tasks to projects",
+          "assign tasks to team members",
+          "set deadlines",
+          "track task status (todo/in-progress/done)",
+          "kanban board drag-and-drop interface",
+          "progress percentage per project",
+          "filter tasks by assignee",
+          "overdue task highlighting"
+        ],
+        "pentagon": {
+          "implemented_count": 9,
+          "total": 9,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "create projects",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/projects endpoint implemented with ProjectCreate model, creates projects with name, ID, timestamp, and progress percentage",
+              "method": "llm"
+            },
+            {
+              "feature": "add tasks to projects",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/projects/{project_id}/tasks endpoint implemented with TaskCreate model, adds tasks with title, description, project_id, assignee, deadline, and default 'todo' status",
+              "method": "llm"
+            },
+            {
+              "feature": "assign tasks to team members",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "TaskCreate model includes assignee_id field, update_task endpoint allows modifying assignee, frontend has assignee dropdown in task creation",
+              "method": "llm"
+            },
+            {
+              "feature": "set deadlines",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "TaskCreate model includes optional deadline field (datetime), frontend has date input for deadline, update_task endpoint allows deadline modification",
+              "method": "llm"
+            },
+            {
+              "feature": "track task status (todo/in-progress/done)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Task model has status field, update_task validates status values as 'todo', 'in_progress', or 'done', Kanban board displays three columns for each status",
+              "method": "llm"
+            },
+            {
+              "feature": "kanban board drag-and-drop interface",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Frontend has Kanban columns with drag-and-drop event handlers (ondrop, ondragover, drag), but backend doesn't show specific endpoint for drag updates - relies on generic task update endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "progress percentage per project",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Project model includes progress_percentage field, GET /api/projects/{project_id}/tasks calculates progress based on done/total tasks and updates project progress",
+              "method": "llm"
+            },
+            {
+              "feature": "filter tasks by assignee",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/tasks endpoint accepts assignee_id query parameter, frontend has filter dropdown that calls filterTasks() function",
+              "method": "llm"
+            },
+            {
+              "feature": "overdue task highlighting",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/tasks endpoint adds 'overdue': true flag to tasks where deadline < now and status != 'done', frontend CSS has .overdue class with red border",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 9,
+          "total": 9,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "create projects",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST /projects/ endpoint with Project model and db_projects storage",
+              "method": "llm"
+            },
+            {
+              "feature": "add tasks to projects",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST /tasks/ endpoint that links tasks to projects via project_id",
+              "method": "llm"
+            },
+            {
+              "feature": "assign tasks to team members",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has PUT /tasks/{task_id}/assign endpoint and Task model includes assignee field",
+              "method": "llm"
+            },
+            {
+              "feature": "set deadlines",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Task model has deadline field but no API endpoint specifically for setting deadlines (only during creation)",
+              "method": "llm"
+            },
+            {
+              "feature": "track task status (todo/in-progress/done)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has PUT /tasks/{task_id}/status endpoint and frontend displays tasks in three status columns",
+              "method": "llm"
+            },
+            {
+              "feature": "kanban board drag-and-drop interface",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has draggable tasks, drop zones, and JavaScript functions for drag-and-drop between columns",
+              "method": "llm"
+            },
+            {
+              "feature": "progress percentage per project",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has GET /projects/{project_id}/progress endpoint that calculates percentage based on done tasks",
+              "method": "llm"
+            },
+            {
+              "feature": "filter tasks by assignee",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has dropdown filter that shows tasks by selected assignee in renderKanban() function",
+              "method": "llm"
+            },
+            {
+              "feature": "overdue task highlighting",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend adds 'overdue' CSS class to tasks where deadline is past today and status is not done",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 3
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 6,
+            "medium": 3
+          }
+        },
+        "baseline": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 6,
+            "medium": 3
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 3,
+        "models": [
+          {
+            "name": "Project",
+            "fields_count": 4
+          },
+          {
+            "name": "Task",
+            "fields_count": 7
+          },
+          {
+            "name": "User",
+            "fields_count": 3
+          }
+        ],
+        "endpoints_count": 7,
+        "endpoint_methods": {
+          "POST": 2,
+          "GET": 3,
+          "PUT": 1,
+          "DELETE": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 210
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 243.81,
+          "phases_succeeded": 5,
+          "time_per_phase": 48.76
+        },
+        "baseline": {
+          "execution_time_seconds": 62.98
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 180.83,
+          "pentagon_slower_by_factor": 3.87
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 7,
+          "readability": 8,
+          "api_design": 8,
+          "error_handling": 6,
+          "notes": "Well-organized with clear separation of concerns. Good API endpoint design with proper HTTP methods. Missing input validation, no data persistence, and incomplete frontend implementation. CORS configured but security is lax with allow_origins: '*'.",
+          "average": 7.25
+        },
+        "baseline": {
+          "code_structure": 5,
+          "readability": 6,
+          "api_design": 6,
+          "error_handling": 4,
+          "notes": "Simpler but less organized. Uses Pydantic models properly but lacks modularity. Missing many required features (no project listing, no task creation with assignee/deadline). Frontend uses mock data instead of API calls. Minimal error handling and validation.",
+          "average": 5.25
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.725,
+          "composite_score": 0.945
+        },
+        "baseline": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.525,
+          "composite_score": 0.905
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.04,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP07",
+      "prompt": "Build an inventory management system with products, stock levels, suppliers, low-stock alerts, and s...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:52:29.318140",
+      "expected_features": {
+        "prompt_id": "VP07",
+        "prompt_description": "Complete inventory management with supplier and sales tracking",
+        "complexity": "complex",
+        "total_expected_features": 10,
+        "expected_features_list": [
+          "add/edit/delete products",
+          "track stock quantities",
+          "manage suppliers",
+          "link products to suppliers",
+          "low stock alerts (configurable threshold)",
+          "record sales/stock out",
+          "record purchases/stock in",
+          "inventory valuation report",
+          "stock movement history",
+          "search and filter products"
+        ],
+        "pentagon": {
+          "implemented_count": 10,
+          "total": 10,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "add/edit/delete products",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/products, PUT /api/products/{id}, DELETE /api/products/{id} endpoints exist with full CRUD operations",
+              "method": "llm"
+            },
+            {
+              "feature": "track stock quantities",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "calculate_stock() function computes current stock from movements, GET /api/products/{product_id}/stock endpoint, current_stock displayed in frontend table",
+              "method": "llm"
+            },
+            {
+              "feature": "manage suppliers",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Supplier model, GET /api/suppliers and POST /api/suppliers endpoints, frontend supplier management UI",
+              "method": "llm"
+            },
+            {
+              "feature": "link products to suppliers",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Product model has primary_supplier_id field, supplier dropdown in product form, supplier filter in product search",
+              "method": "llm"
+            },
+            {
+              "feature": "low stock alerts (configurable threshold)",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Product has low_stock_threshold field, check_low_stock() function, low_stock_alert flag in product responses, frontend highlights low stock rows",
+              "method": "llm"
+            },
+            {
+              "feature": "record sales/stock out",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "StockMovement model with movement_type field, POST /api/stock_movements endpoint accepts 'sale' type, frontend has stock movement form",
+              "method": "llm"
+            },
+            {
+              "feature": "record purchases/stock in",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "StockMovement model with movement_type field, POST /api/stock_movements endpoint accepts 'purchase' type, supplier_id can be recorded with purchases",
+              "method": "llm"
+            },
+            {
+              "feature": "inventory valuation report",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/inventory_valuation endpoint calculates total value based on stock \u00d7 unit_price",
+              "method": "llm"
+            },
+            {
+              "feature": "stock movement history",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/stock_movements endpoint with product_id filter, StockMovement model tracks all inventory changes",
+              "method": "llm"
+            },
+            {
+              "feature": "search and filter products",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/products supports name search, supplier_id filter, low_stock filter, frontend has search inputs and filter dropdowns",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 8,
+          "total": 10,
+          "percentage": 80.0,
+          "features_detail": [
+            {
+              "feature": "add/edit/delete products",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST, PUT, DELETE endpoints for products; frontend has add and delete functionality",
+              "method": "llm"
+            },
+            {
+              "feature": "track stock quantities",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Product model includes stock field, displayed in frontend table, updated during sales",
+              "method": "llm"
+            },
+            {
+              "feature": "manage suppliers",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Supplier model exists but no CRUD endpoints implemented; only data structure defined",
+              "method": "llm"
+            },
+            {
+              "feature": "link products to suppliers",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Product model has supplier_id field but no functionality to set/use it in frontend or backend logic",
+              "method": "llm"
+            },
+            {
+              "feature": "low stock alerts (configurable threshold)",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Alerts endpoint returns products below threshold, but threshold is hardcoded (alert_threshold=10) and not configurable",
+              "method": "llm"
+            },
+            {
+              "feature": "record sales/stock out",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "/sales endpoint reduces stock and creates movement record; frontend has sales recording form",
+              "method": "llm"
+            },
+            {
+              "feature": "record purchases/stock in",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No endpoint or frontend functionality for recording purchases/stock increases",
+              "method": "llm"
+            },
+            {
+              "feature": "inventory valuation report",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "/valuation endpoint calculates total value; frontend has calculate button",
+              "method": "llm"
+            },
+            {
+              "feature": "stock movement history",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Movement model exists and sales create movement records, but no endpoint to retrieve/view history",
+              "method": "llm"
+            },
+            {
+              "feature": "search and filter products",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No search/filter functionality in backend endpoints or frontend interface",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 2,
+          "pentagon_percentage_advantage": 20.0,
+          "winner": "Pentagon"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 4
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 4,
+            "low": 1
+          }
+        },
+        "baseline": {
+          "count": 10,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 5,
+            "medium": 4,
+            "low": 1
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 3,
+        "models": [
+          {
+            "name": "Product",
+            "fields_count": 9
+          },
+          {
+            "name": "Supplier",
+            "fields_count": 4
+          },
+          {
+            "name": "StockMovement",
+            "fields_count": 7
+          }
+        ],
+        "endpoints_count": 8,
+        "endpoint_methods": {
+          "GET": 3,
+          "POST": 3,
+          "PUT": 1,
+          "DELETE": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 254
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 608.92,
+          "phases_succeeded": 5,
+          "time_per_phase": 121.78
+        },
+        "baseline": {
+          "execution_time_seconds": 61.15
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 547.77,
+          "pentagon_slower_by_factor": 9.96
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 7,
+          "readability": 8,
+          "api_design": 8,
+          "error_handling": 6,
+          "notes": "Better organized with separate concerns (stock calculation functions), uses Pydantic models properly, and has more complete features. However, uses in-memory dicts with manual ID management and has incomplete error handling (truncated update endpoint). Good RESTful endpoint naming with /api prefix.",
+          "average": 7.25
+        },
+        "baseline": {
+          "code_structure": 4,
+          "readability": 6,
+          "api_design": 5,
+          "error_handling": 3,
+          "notes": "Minimal structure with global lists, lacks proper separation of concerns. API endpoints are basic but functional. Critical issues: stock updates directly modify product object (no audit trail), no validation on stock levels, missing many required features (supplier management, search/filter, movement history). Error handling is minimal.",
+          "average": 4.5
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.725,
+          "composite_score": 0.945
+        },
+        "baseline": {
+          "features_score": 0.8,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.45,
+          "composite_score": 0.81
+        },
+        "comparison": {
+          "features_advantage": 0.2,
+          "composite_advantage": 0.135,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP08",
+      "prompt": "Create a real-time chat application with multiple rooms, user authentication, message history, and f...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:53:03.847530",
+      "expected_features": {
+        "prompt_id": "VP08",
+        "prompt_description": "Real-time chat with rooms, authentication, and file sharing",
+        "complexity": "complex",
+        "total_expected_features": 9,
+        "expected_features_list": [
+          "user registration and login",
+          "create and join chat rooms",
+          "real-time message sending/receiving",
+          "message history persistence",
+          "user online/offline status",
+          "file/image upload and sharing",
+          "message timestamps",
+          "typing indicators",
+          "unread message count"
+        ],
+        "pentagon": {
+          "implemented_count": 9,
+          "total": 9,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "user registration and login",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has /api/auth/register and /api/auth/login endpoints with password hashing and JWT token return. Frontend has register() and login() functions.",
+              "method": "llm"
+            },
+            {
+              "feature": "create and join chat rooms",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has /api/rooms (POST/GET) and /api/rooms/{room_id}/join endpoints. Frontend has createRoom(), listRooms(), and joinRoom() functions.",
+              "method": "llm"
+            },
+            {
+              "feature": "real-time message sending/receiving",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "WebSocket endpoint /ws/{username} handles real-time messaging with message broadcasting to all active connections.",
+              "method": "llm"
+            },
+            {
+              "feature": "message history persistence",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Messages stored in memory (messages_db list) but not persisted to database. GET /api/rooms/{room_id}/messages returns history but data is volatile.",
+              "method": "llm"
+            },
+            {
+              "feature": "user online/offline status",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "User model has status field, WebSocket updates status to online/offline, and /api/users/status endpoint returns all users' status.",
+              "method": "llm"
+            },
+            {
+              "feature": "file/image upload and sharing",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend has /api/upload endpoint and Message model includes file_url field, but file upload is mocked (no actual storage) and file sharing not integrated into chat flow.",
+              "method": "llm"
+            },
+            {
+              "feature": "message timestamps",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Message model includes created_at field, messages stored with timestamp, and frontend displays timestamp in chat messages.",
+              "method": "llm"
+            },
+            {
+              "feature": "typing indicators",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "WebSocket handles 'typing' message type and broadcasts to other users. Frontend has sendTyping() function and typingIndicator display.",
+              "method": "llm"
+            },
+            {
+              "feature": "unread message count",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend tracks unread_counts in WebSocket and frontend has unreadCount display, but no endpoint to fetch counts and UI integration is minimal.",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 7,
+          "total": 9,
+          "percentage": 77.8,
+          "features_detail": [
+            {
+              "feature": "user registration and login",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has /register and /login endpoints with user storage; frontend has UI and functions for both",
+              "method": "llm"
+            },
+            {
+              "feature": "create and join chat rooms",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST /rooms/{room_name} and WebSocket endpoint with room joining; frontend has createRoom() and joinRoom() functions",
+              "method": "llm"
+            },
+            {
+              "feature": "real-time message sending/receiving",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "WebSocket endpoint handles bidirectional messaging; frontend sends via ws.send() and receives via ws.onmessage",
+              "method": "llm"
+            },
+            {
+              "feature": "message history persistence",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "GET /history/{room} returns last 50 messages stored in memory (not persistent across restarts)",
+              "method": "llm"
+            },
+            {
+              "feature": "user online/offline status",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend tracks connected users in rooms[room]['users'] but no API to query status; frontend doesn't display status",
+              "method": "llm"
+            },
+            {
+              "feature": "file/image upload and sharing",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Backend has /upload endpoint returning file_id, but no storage or retrieval; frontend uploads and sends filename only",
+              "method": "llm"
+            },
+            {
+              "feature": "message timestamps",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Message model includes timestamp; backend sets datetime; frontend displays in formatted time",
+              "method": "llm"
+            },
+            {
+              "feature": "typing indicators",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "Frontend has typingIndicator() placeholder but no logic; backend has no support for typing events",
+              "method": "llm"
+            },
+            {
+              "feature": "unread message count",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No tracking of read/unread messages in backend or frontend; no UI element for counts",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 2,
+          "pentagon_percentage_advantage": 22.2,
+          "winner": "Pentagon"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 5
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 10,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 5,
+            "medium": 3,
+            "low": 2
+          }
+        },
+        "baseline": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 3,
+            "low": 2
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 3,
+        "models": [
+          {
+            "name": "User",
+            "fields_count": 6
+          },
+          {
+            "name": "ChatRoom",
+            "fields_count": 4
+          },
+          {
+            "name": "Message",
+            "fields_count": 6
+          }
+        ],
+        "endpoints_count": 7,
+        "endpoint_methods": {
+          "POST": 5,
+          "GET": 2
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 244
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 335.45,
+          "phases_succeeded": 5,
+          "time_per_phase": 67.09
+        },
+        "baseline": {
+          "execution_time_seconds": 61.91
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 273.54,
+          "pentagon_slower_by_factor": 5.42
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 4,
+          "readability": 5,
+          "api_design": 6,
+          "error_handling": 3,
+          "notes": "Better feature coverage with JWT auth, typing indicators, unread counts. However, uses global mutable state (users_db, rooms_db), no database, no proper session management. WebSocket logic mixes concerns, error handling incomplete (bare except). Frontend has better UI separation but incomplete functions.",
+          "average": 4.5
+        },
+        "baseline": {
+          "code_structure": 5,
+          "readability": 7,
+          "api_design": 5,
+          "error_handling": 4,
+          "notes": "Cleaner, more readable code with proper WebSocketDisconnect handling. Simpler but more organized structure. Missing required features (JWT auth, typing indicators, unread counts, proper file upload). Uses Pydantic models well. Frontend is minimal but functional. Both lack production readiness (in-memory storage, no password hashing in baseline).",
+          "average": 5.25
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.45,
+          "composite_score": 0.89
+        },
+        "baseline": {
+          "features_score": 0.778,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.525,
+          "composite_score": 0.816
+        },
+        "comparison": {
+          "features_advantage": 0.222,
+          "composite_advantage": 0.074,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP09",
+      "prompt": "Build an e-learning platform with courses, lessons, quizzes, progress tracking, and certificates, wh...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:53:37.404177",
+      "expected_features": {
+        "prompt_id": "VP09",
+        "prompt_description": "E-learning platform with courses, assessments, and certification",
+        "complexity": "complex",
+        "total_expected_features": 10,
+        "expected_features_list": [
+          "create and manage courses",
+          "organize lessons within courses",
+          "video/text content support",
+          "create quizzes with multiple question types",
+          "auto-grade quizzes",
+          "track learner progress per course",
+          "mark lessons as complete",
+          "generate completion certificates",
+          "course enrollment system",
+          "dashboard with enrolled courses and progress"
+        ],
+        "pentagon": {
+          "implemented_count": 10,
+          "total": 10,
+          "percentage": 100.0,
+          "features_detail": [
+            {
+              "feature": "create and manage courses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/courses endpoint creates courses, GET /api/courses lists them, Course model with instructor_id, title, description",
+              "method": "llm"
+            },
+            {
+              "feature": "organize lessons within courses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/courses/{course_id}/lessons adds lessons to courses, Lesson model has course_id and order field for sequencing",
+              "method": "llm"
+            },
+            {
+              "feature": "video/text content support",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Lesson model has content_type and content_url fields, frontend shows support for different content types",
+              "method": "llm"
+            },
+            {
+              "feature": "create quizzes with multiple question types",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Quiz model has questions: json field to support multiple types, but no specific question type validation or structure shown in code",
+              "method": "llm"
+            },
+            {
+              "feature": "auto-grade quizzes",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/quizzes/{quiz_id}/submit endpoint compares answers with correct_answer, calculates score and pass/fail status",
+              "method": "llm"
+            },
+            {
+              "feature": "track learner progress per course",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Enrollment model has progress_percent field, dashboard shows progress, but no automatic progress calculation from completed lessons/quizzes",
+              "method": "llm"
+            },
+            {
+              "feature": "mark lessons as complete",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "PUT /api/lessons/{lesson_id}/complete endpoint sets is_completed to true, Lesson model has is_completed field",
+              "method": "llm"
+            },
+            {
+              "feature": "generate completion certificates",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Enrollment model has certificate_url field, but no endpoint or logic shown for actually generating certificates",
+              "method": "llm"
+            },
+            {
+              "feature": "course enrollment system",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /api/courses/{course_id}/enroll endpoint, Enrollment model with learner_id and course_id",
+              "method": "llm"
+            },
+            {
+              "feature": "dashboard with enrolled courses and progress",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/learners/{learner_id}/dashboard endpoint returns enrolled courses with progress_percent and certificate_url",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 9,
+          "total": 10,
+          "percentage": 90.0,
+          "features_detail": [
+            {
+              "feature": "create and manage courses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has POST /courses/ endpoint with Course model, frontend has create course form",
+              "method": "llm"
+            },
+            {
+              "feature": "organize lessons within courses",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Backend has Lesson model with course_id field and GET /lessons/{course_id} endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "video/text content support",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Lesson model has content_type field but no specific handling for video vs text in code",
+              "method": "llm"
+            },
+            {
+              "feature": "create quizzes with multiple question types",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Quiz model exists but only supports multiple-choice (options/answer), no other question types implemented",
+              "method": "llm"
+            },
+            {
+              "feature": "auto-grade quizzes",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No endpoint for submitting quiz answers or auto-grading logic in the code",
+              "method": "llm"
+            },
+            {
+              "feature": "track learner progress per course",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Enrollment model has progress field, GET /progress/{user_id}/{course_id} endpoint exists",
+              "method": "llm"
+            },
+            {
+              "feature": "mark lessons as complete",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "POST /complete_lesson/ endpoint exists but only increments progress by 10%, no direct lesson completion tracking",
+              "method": "llm"
+            },
+            {
+              "feature": "generate completion certificates",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "POST /certificate/{user_id}/{course_id} endpoint checks if progress >= 100% and generates certificate",
+              "method": "llm"
+            },
+            {
+              "feature": "course enrollment system",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Enrollment model and POST /enroll/ endpoint implemented, frontend has enrollment form",
+              "method": "llm"
+            },
+            {
+              "feature": "dashboard with enrolled courses and progress",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Frontend has progress checking but no comprehensive dashboard showing all enrolled courses",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 1,
+          "pentagon_percentage_advantage": 10.0,
+          "winner": "Pentagon"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 4
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 10,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 8,
+            "medium": 2
+          }
+        },
+        "baseline": {
+          "count": 6,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 5,
+            "medium": 1
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 4,
+        "models": [
+          {
+            "name": "Course",
+            "fields_count": 5
+          },
+          {
+            "name": "Lesson",
+            "fields_count": 7
+          },
+          {
+            "name": "Quiz",
+            "fields_count": 5
+          },
+          {
+            "name": "Enrollment",
+            "fields_count": 6
+          }
+        ],
+        "endpoints_count": 8,
+        "endpoint_methods": {
+          "GET": 2,
+          "POST": 5,
+          "PUT": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 285
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 347.28,
+          "phases_succeeded": 5,
+          "time_per_phase": 69.46
+        },
+        "baseline": {
+          "execution_time_seconds": 64.79
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 282.49,
+          "pentagon_slower_by_factor": 5.36
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 6,
+          "readability": 7,
+          "api_design": 7,
+          "error_handling": 5,
+          "notes": "Better organized with CORS, models, and consistent endpoints. Has auto-grading logic and progress tracking. However, uses in-memory dicts without proper separation, missing certificate generation, and incomplete functions. Frontend has basic UI but incomplete implementations.",
+          "average": 6.25
+        },
+        "baseline": {
+          "code_structure": 4,
+          "readability": 6,
+          "api_design": 5,
+          "error_handling": 4,
+          "notes": "Simpler but functional. Has certificate endpoint and progress tracking. However, poor separation of concerns (DB as lists in global scope), inconsistent endpoints (mix of REST and RPC-style), minimal validation, and frontend is very basic with missing quiz functionality.",
+          "average": 4.75
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 1.0,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.625,
+          "composite_score": 0.925
+        },
+        "baseline": {
+          "features_score": 0.9,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.475,
+          "composite_score": 0.855
+        },
+        "comparison": {
+          "features_advantage": 0.1,
+          "composite_advantage": 0.07,
+          "pentagon_wins": true
+        }
+      }
+    },
+    {
+      "prompt_id": "VP10",
+      "prompt": "Create a booking and appointment scheduling system with calendar view, availability management, remi...",
+      "complexity": "complex",
+      "timestamp": "2026-01-19T00:54:11.639910",
+      "expected_features": {
+        "prompt_id": "VP10",
+        "prompt_description": "Appointment scheduling with calendar, availability, and customer management",
+        "complexity": "complex",
+        "total_expected_features": 10,
+        "expected_features_list": [
+          "define service types and durations",
+          "set available time slots",
+          "calendar view of appointments",
+          "customer booking interface",
+          "prevent double-booking",
+          "customer database with history",
+          "email/notification reminders",
+          "reschedule and cancel appointments",
+          "daily/weekly schedule overview",
+          "booking confirmation system"
+        ],
+        "pentagon": {
+          "implemented_count": 9,
+          "total": 10,
+          "percentage": 90.0,
+          "features_detail": [
+            {
+              "feature": "define service types and durations",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Service model with name, duration_minutes, description; POST /api/services endpoint to create services",
+              "method": "llm"
+            },
+            {
+              "feature": "set available time slots",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "AvailabilitySlot model with start_time, end_time, service_id; POST /api/availability endpoint to create slots with duration validation",
+              "method": "llm"
+            },
+            {
+              "feature": "calendar view of appointments",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "GET /api/appointments returns all appointments but no specific calendar UI; frontend only shows booking interface, not admin calendar",
+              "method": "llm"
+            },
+            {
+              "feature": "customer booking interface",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend HTML/JS with service selection, slot loading, customer form, and booking button; POST /api/appointments endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "prevent double-booking",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "GET /api/availability filters out booked slots; appointment creation checks for existing booked slots; update appointment validates new slot availability",
+              "method": "llm"
+            },
+            {
+              "feature": "customer database with history",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Customer model exists with basic fields; appointments linked to customers via customer_id, but no dedicated endpoint to view customer history",
+              "method": "llm"
+            },
+            {
+              "feature": "email/notification reminders",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "GET /api/appointments includes reminder logic that prints to console for appointments 24-48 hours away, but no actual email sending",
+              "method": "llm"
+            },
+            {
+              "feature": "reschedule and cancel appointments",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "PUT /api/appointments/{id} accepts status and slot_id updates; frontend shows cancel button; status field handles cancellation",
+              "method": "llm"
+            },
+            {
+              "feature": "daily/weekly schedule overview",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No endpoints or UI for filtering appointments by day/week; GET /api/appointments returns all appointments without date filtering",
+              "method": "llm"
+            },
+            {
+              "feature": "booking confirmation system",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Appointment creation prints confirmation email to console, but no actual email system or confirmation UI beyond success message",
+              "method": "llm"
+            }
+          ]
+        },
+        "baseline": {
+          "implemented_count": 9,
+          "total": 10,
+          "percentage": 90.0,
+          "features_detail": [
+            {
+              "feature": "define service types and durations",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Service class with name and duration fields, POST endpoint /services/ to create services",
+              "method": "llm"
+            },
+            {
+              "feature": "set available time slots",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Slot class exists but no endpoint to create slots; slots are stored in memory but no admin interface to set them",
+              "method": "llm"
+            },
+            {
+              "feature": "calendar view of appointments",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "Frontend has calendar grid showing booked/available days, loadCalendar() fetches appointments",
+              "method": "llm"
+            },
+            {
+              "feature": "customer booking interface",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "HTML form with name, email, service, date, time fields; submits to /book/ endpoint",
+              "method": "llm"
+            },
+            {
+              "feature": "prevent double-booking",
+              "implemented": true,
+              "status": "implemented",
+              "evidence": "book_appointment checks if slot_id already exists in appointments; raises HTTP 400 if booked",
+              "method": "llm"
+            },
+            {
+              "feature": "customer database with history",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Customer class exists but no endpoints to create customers; appointments store customer_id but no history tracking",
+              "method": "llm"
+            },
+            {
+              "feature": "email/notification reminders",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "send_reminders endpoint prints reminders but no actual email sending; confirmation email is simulated with print",
+              "method": "llm"
+            },
+            {
+              "feature": "reschedule and cancel appointments",
+              "implemented": false,
+              "status": "not_implemented",
+              "evidence": "No endpoints or frontend functionality to update or cancel appointments; only creation and listing",
+              "method": "llm"
+            },
+            {
+              "feature": "daily/weekly schedule overview",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Calendar shows 7 days with booked status but no actual date mapping; simplified overview present",
+              "method": "llm"
+            },
+            {
+              "feature": "booking confirmation system",
+              "implemented": true,
+              "status": "partial",
+              "evidence": "Frontend shows alert on booking success; backend prints confirmation but no actual email/SMS sent",
+              "method": "llm"
+            }
+          ]
+        },
+        "comparison": {
+          "pentagon_advantage": 0,
+          "pentagon_percentage_advantage": 0.0,
+          "winner": "Tie"
+        }
+      },
+      "pipeline": {
+        "pentagon": {
+          "phases_succeeded": 5,
+          "total_phases": 5,
+          "success_rate": 1.0,
+          "phase_details": {
+            "user_stories": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "system_design": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "backend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "frontend_code": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            },
+            "test_report": {
+              "success": true,
+              "has_data": true,
+              "has_error": false
+            }
+          },
+          "overall_success": true
+        },
+        "baseline": {
+          "components_succeeded": 4,
+          "total_components": 4,
+          "success_rate": 1.0,
+          "component_details": {
+            "user_stories": true,
+            "backend_code": true,
+            "frontend_code": true,
+            "test_summary": true
+          },
+          "overall_success": true
+        }
+      },
+      "executability": {
+        "pentagon": {
+          "backend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "main.py",
+                "valid": true,
+                "error": null
+              }
+            ]
+          },
+          "frontend": {
+            "files_checked": 1,
+            "all_valid": true,
+            "details": [
+              {
+                "filename": "index.html",
+                "valid": true,
+                "issues": []
+              }
+            ]
+          },
+          "overall_score": 1.0
+        },
+        "baseline": {
+          "backend": {
+            "valid": true,
+            "error": null
+          },
+          "frontend": {
+            "valid": true,
+            "issues": []
+          },
+          "overall_score": 1.0
+        }
+      },
+      "qa_results": {
+        "has_qa": true,
+        "overall_status": "pass",
+        "test_cases": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pass_rate": 1.0,
+        "recommendations_count": 5
+      },
+      "user_stories": {
+        "pentagon": {
+          "count": 9,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 4,
+            "medium": 4,
+            "low": 1
+          }
+        },
+        "baseline": {
+          "count": 10,
+          "has_priorities": true,
+          "has_descriptions": true,
+          "has_ids": true,
+          "priority_distribution": {
+            "high": 6,
+            "medium": 4
+          }
+        }
+      },
+      "system_design": {
+        "has_design": true,
+        "models_count": 4,
+        "models": [
+          {
+            "name": "Service",
+            "fields_count": 4
+          },
+          {
+            "name": "AvailabilitySlot",
+            "fields_count": 4
+          },
+          {
+            "name": "Customer",
+            "fields_count": 4
+          },
+          {
+            "name": "Appointment",
+            "fields_count": 6
+          }
+        ],
+        "endpoints_count": 7,
+        "endpoint_methods": {
+          "GET": 3,
+          "POST": 3,
+          "PUT": 1
+        },
+        "has_architecture_notes": true,
+        "architecture_notes_length": 189
+      },
+      "efficiency": {
+        "pentagon": {
+          "execution_time_seconds": 177.29,
+          "phases_succeeded": 5,
+          "time_per_phase": 35.46
+        },
+        "baseline": {
+          "execution_time_seconds": 39.84
+        },
+        "comparison": {
+          "pentagon_slower_by_seconds": 137.45,
+          "pentagon_slower_by_factor": 4.45
+        }
+      },
+      "code_quality_llm": {
+        "pentagon": {
+          "code_structure": 7,
+          "readability": 8,
+          "api_design": 8,
+          "error_handling": 7,
+          "notes": "Well-organized with clear separation of concerns. Uses Pydantic models effectively. Good API endpoint naming and structure. Includes validation for slot duration and prevents double-booking. Missing complete error handling in frontend and backend endpoints are truncated.",
+          "average": 7.5
+        },
+        "baseline": {
+          "code_structure": 4,
+          "readability": 6,
+          "api_design": 5,
+          "error_handling": 3,
+          "notes": "Minimal structure with everything in single files. Basic REST endpoints but inconsistent naming (/services/ vs /book/). Very limited error handling - no validation of customer existence, service existence, or time slot logic. Frontend has hardcoded data and simplistic calendar. Missing many required features from specification.",
+          "average": 4.5
+        }
+      },
+      "summary": {
+        "pentagon": {
+          "features_score": 0.9,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "qa_score": 1.0,
+          "quality_score": 0.75,
+          "composite_score": 0.92
+        },
+        "baseline": {
+          "features_score": 0.9,
+          "pipeline_score": 1.0,
+          "executability_score": 1.0,
+          "quality_score": 0.45,
+          "composite_score": 0.85
+        },
+        "comparison": {
+          "features_advantage": 0.0,
+          "composite_advantage": 0.07,
+          "pentagon_wins": true
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "pentagon": {
+      "features": {
+        "mean": 0.978,
+        "min": 0.875,
+        "max": 1.0,
+        "std": 0.045
+      },
+      "pipeline": {
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "std": 0.0
+      },
+      "executability": {
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "std": 0.0
+      },
+      "qa": {
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "std": 0.0
+      },
+      "quality": {
+        "mean": 0.708,
+        "min": 0.45,
+        "max": 0.875,
+        "std": 0.115
+      },
+      "composite": {
+        "mean": 0.935,
+        "min": 0.89,
+        "max": 0.975,
+        "std": 0.025
+      }
+    },
+    "baseline": {
+      "features": {
+        "mean": 0.925,
+        "min": 0.778,
+        "max": 1.0,
+        "std": 0.083
+      },
+      "pipeline": {
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "std": 0.0
+      },
+      "executability": {
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "std": 0.0
+      },
+      "quality": {
+        "mean": 0.492,
+        "min": 0.375,
+        "max": 0.625,
+        "std": 0.064
+      },
+      "composite": {
+        "mean": 0.869,
+        "min": 0.81,
+        "max": 0.925,
+        "std": 0.036
+      }
+    },
+    "comparison": {
+      "pentagon_wins": 10,
+      "baseline_wins": 0,
+      "pentagon_win_rate": 1.0,
+      "features_win_rate": 0.3,
+      "average_features_advantage": 0.053,
+      "average_composite_advantage": 0.066
+    },
+    "by_complexity": {
+      "easy": {
+        "count": 2,
+        "pentagon_features_mean": 1.0,
+        "baseline_features_mean": 1.0,
+        "pentagon_composite_mean": 0.96,
+        "baseline_composite_mean": 0.883
+      },
+      "medium": {
+        "count": 2,
+        "pentagon_features_mean": 1.0,
+        "baseline_features_mean": 1.0,
+        "pentagon_composite_mean": 0.948,
+        "baseline_composite_mean": 0.915
+      },
+      "complex": {
+        "count": 6,
+        "pentagon_features_mean": 0.963,
+        "baseline_features_mean": 0.876,
+        "pentagon_composite_mean": 0.922,
+        "baseline_composite_mean": 0.848
+      }
+    }
+  },
+  "conclusions": {
+    "overall_winner": "Pentagon",
+    "composite_win_rate": 1.0,
+    "features_win_rate": 0.3,
+    "key_findings": [
+      "Pentagon Protocol significantly outperforms Baseline across most prompts",
+      "Pentagon's built-in QA achieves 100.0% test pass rate",
+      "Average composite: Pentagon 0.935 vs Baseline 0.869",
+      "Pentagon excels in complex prompts: 96.3% vs 87.6% features"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Record Income and Expenses",
+      "description": "As a user, I want to add income and expense transactions so that I can track my cash flow.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Categorize Transactions",
+      "description": "As a user, I want to assign categories to my transactions so that I can organize my finances.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Set Category Budgets",
+      "description": "As a user, I want to set a monthly budget for each category so that I can control my spending.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Track Budget Progress",
+      "description": "As a user, I want to see my actual spending versus my budget so that I can stay on track.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "View Spending Pie Chart",
+      "description": "As a user, I want to see a pie chart of my spending by category so that I understand my expense distribution.",
+      "priority": "medium"
+    },
+    {
+      "id": "US006",
+      "title": "Analyze Monthly Trends",
+      "description": "As a user, I want to view line/bar charts of my monthly spending so that I can identify trends over time.",
+      "priority": "medium"
+    },
+    {
+      "id": "US007",
+      "title": "Filter Transactions by Date",
+      "description": "As a user, I want to filter my transactions by a custom date range so that I can review specific periods.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "Export Financial Data",
+      "description": "As a user, I want to export my transaction data so that I can use it for external analysis or records.",
+      "priority": "low"
+    }
+  ],
+  "summary": "A personal finance tracker MVP enabling users to log transactions, categorize spending, set and monitor budgets, and visualize financial data through charts and exports."
+}

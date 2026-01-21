@@ -1,0 +1,61 @@
+{
+  "success": true,
+  "vibe_prompt": "Build a personal finance tracker with expense categories, monthly budgets, and spending analytics with charts, which sould have minimum features : add income and expenses, categorize transactions, set monthly budget per category, track budget vs actual spending, visualize spending by category (pie chart), show monthly trends (line/bar chart), filter by date range, export data",
+  "project_dir": "output\\baseline_build_a_personal_finance_track_20260119_001425",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Add Income and Expenses",
+        "description": "As a user, I want to add income and expense transactions with amount, date, and description so I can track my finances.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Categorize Transactions",
+        "description": "As a user, I want to assign categories (e.g., Food, Rent) to transactions so I can organize my spending.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Set Monthly Budget per Category",
+        "description": "As a user, I want to set a monthly budget for each category so I can control my spending.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Track Budget vs Actual Spending",
+        "description": "As a user, I want to see how my actual spending compares to my budget per category so I can stay on track.",
+        "priority": "high"
+      },
+      {
+        "id": "US005",
+        "title": "Visualize Spending by Category",
+        "description": "As a user, I want to view a pie chart of my spending by category so I can understand my expense distribution.",
+        "priority": "medium"
+      },
+      {
+        "id": "US006",
+        "title": "Show Monthly Trends",
+        "description": "As a user, I want to see a line or bar chart of my monthly spending trends so I can analyze changes over time.",
+        "priority": "medium"
+      },
+      {
+        "id": "US007",
+        "title": "Filter by Date Range",
+        "description": "As a user, I want to filter transactions and charts by a date range so I can review specific periods.",
+        "priority": "medium"
+      },
+      {
+        "id": "US008",
+        "title": "Export Data",
+        "description": "As a user, I want to export my transaction data to a CSV file so I can use it externally.",
+        "priority": "low"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nfrom typing import List, Optional\nfrom datetime import date\nimport csv\nfrom fastapi.responses import StreamingResponse\nimport io\n\napp = FastAPI()\n\nclass Transaction(BaseModel):\n    id: int\n    type: str  # 'income' or 'expense'\n    amount: float\n    category: str\n    date: date\n    description: str\n\nclass Budget(BaseModel):\n    category: str\n    monthly_limit: float\n\ntransactions = []\nbudgets = [Budget(category='Food', monthly_limit=300), Budget(category='Rent', monthly_limit=1000)]\n\n@app.post('/transactions/')\ndef add_transaction(transaction: Transaction):\n    transactions.append(transaction)\n    return {'message': 'Transaction added'}\n\n@app.get('/transactions/')\ndef get_transactions(start_date: Optional[date] = None, end_date: Optional[date] = None):\n    filtered = transactions\n    if start_date:\n        filtered = [t for t in filtered if t.date >= start_date]\n    if end_date:\n        filtered = [t for t in filtered if t.date <= end_date]\n    return filtered\n\n@app.get('/budgets/')\ndef get_budgets():\n    return budgets\n\n@app.get('/analytics/spending_by_category')\ndef spending_by_category():\n    spending = {}\n    for t in transactions:\n        if t.type == 'expense':\n            spending[t.category] = spending.get(t.category, 0) + t.amount\n    return spending\n\n@app.get('/export/')\ndef export_data():\n    output = io.StringIO()\n    writer = csv.writer(output)\n    writer.writerow(['ID', 'Type', 'Amount', 'Category', 'Date', 'Description'])\n    for t in transactions:\n        writer.writerow([t.id, t.type, t.amount, t.category, t.date, t.description])\n    output.seek(0)\n    return StreamingResponse(output, media_type='text/csv', headers={'Content-Disposition': 'attachment; filename=transactions.csv'})",
+    "frontend_code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Personal Finance Tracker</title>\n    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>\n    <style>\n        body { font-family: Arial; margin: 20px; }\n        .section { margin-bottom: 30px; }\n        input, select, button { margin: 5px; padding: 8px; }\n        .chart-container { width: 400px; height: 300px; }\n    </style>\n</head>\n<body>\n    <h1>Personal Finance Tracker</h1>\n    \n    <div class='section'>\n        <h2>Add Transaction</h2>\n        <input type='number' id='amount' placeholder='Amount'>\n        <select id='type'>\n            <option value='income'>Income</option>\n            <option value='expense'>Expense</option>\n        </select>\n        <input id='category' placeholder='Category'>\n        <input type='date' id='date'>\n        <input id='description' placeholder='Description'>\n        <button onclick='addTransaction()'>Add</button>\n    </div>\n    \n    <div class='section'>\n        <h2>Transactions</h2>\n        <input type='date' id='startDate'> to <input type='date' id='endDate'>\n        <button onclick='loadTransactions()'>Filter</button>\n        <ul id='transactionList'></ul>\n    </div>\n    \n    <div class='section'>\n        <h2>Spending by Category (Pie Chart)</h2>\n        <canvas id='pieChart' class='chart-container'></canvas>\n    </div>\n    \n    <div class='section'>\n        <h2>Monthly Trends (Bar Chart)</h2>\n        <canvas id='barChart' class='chart-container'></canvas>\n    </div>\n    \n    <div class='section'>\n        <button onclick='exportData()'>Export to CSV</button>\n    </div>\n    \n    <script>\n        let pieChart, barChart;\n        \n        async function addTransaction() {\n            const transaction = {\n                id: Date.now(),\n                type: document.getElementById('type').value,\n                amount: parseFloat(document.getElementById('amount').value),\n                category: document.getElementById('category').value,\n                date: document.getElementById('date').value,\n                description: document.getElementById('description').value\n            };\n            await fetch('/transactions/', {\n                method: 'POST',\n                headers: {'Content-Type': 'application/json'},\n                body: JSON.stringify(transaction)\n            });\n            loadTransactions();\n        }\n        \n        async function loadTransactions() {\n            const start = document.getElementById('startDate').value;\n            const end = document.getElementById('endDate').value;\n            let url = '/transactions/';\n            if (start || end) url += `?start_date=${start}&end_date=${end}`;\n            const res = await fetch(url);\n            const transactions = await res.json();\n            const list = document.getElementById('transactionList');\n            list.innerHTML = transactions.map(t => `<li>${t.date}: ${t.type} $${t.amount} (${t.category}) - ${t.description}</li>`).join('');\n            updateCharts();\n        }\n        \n        async function updateCharts() {\n            const res = await fetch('/analytics/spending_by_category');\n            const spending = await res.json();\n            \n            if (pieChart) pieChart.destroy();\n            pieChart = new Chart(document.getElementById('pieChart'), {\n                type: 'pie',\n                data: {\n                    labels: Object.keys(spending),\n                    datasets: [{ data: Object.values(spending), backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'] }]\n                }\n            });\n            \n            if (barChart) barChart.destroy();\n            barChart = new Chart(document.getElementById('barChart'), {\n                type: 'bar',\n                data: {\n                    labels: Object.keys(spending),\n                    datasets: [{ label: 'Spending', data: Object.values(spending), backgroundColor: '#36A2EB' }]\n                }\n            });\n        }\n        \n        function exportData() {\n            window.open('/export/', '_blank');\n        }\n        \n        loadTransactions();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

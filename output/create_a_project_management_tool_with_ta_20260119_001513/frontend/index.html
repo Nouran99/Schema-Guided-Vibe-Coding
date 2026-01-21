@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        input, select, button { margin: 5px; padding: 8px; }
+        .task { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 4px solid #007bff; cursor: move; }
+        .overdue { border-left-color: #dc3545; }
+        .kanban { display: flex; gap: 10px; }
+        .column { flex: 1; background: #e9ecef; padding: 10px; border-radius: 5px; min-height: 200px; }
+        .column h3 { text-align: center; }
+        .error { color: #dc3545; margin: 5px; }
+        .success { color: #28a745; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Project Manager</h1>
+        
+        <div class="section">
+            <h2>Create Project</h2>
+            <input id="projectName" placeholder="Project name">
+            <button onclick="createProject()">Create</button>
+            <div id="projectMsg"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Projects</h2>
+            <div id="projects">Loading...</div>
+        </div>
+        
+        <div class="section">
+            <h2>Add Task</h2>
+            <input id="taskTitle" placeholder="Task title">
+            <input id="taskDesc" placeholder="Description">
+            <input id="taskDeadline" type="date">
+            <select id="taskProject"><option>Select project</option></select>
+            <select id="taskAssignee"><option>Select assignee</option></select>
+            <button onclick="addTask()">Add Task</button>
+            <div id="taskMsg"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Kanban Board</h2>
+            <button onclick="loadKanban()">Refresh</button>
+            <div class="kanban">
+                <div class="column"><h3>Todo</h3><div id="todo" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="column"><h3>In Progress</h3><div id="progress" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="column"><h3>Done</h3><div id="done" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Filter Tasks</h2>
+            <select id="filterAssignee" onchange="filterTasks()">
+                <option value="">All assignees</option>
+            </select>
+            <div id="filteredTasks"></div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let tasks = [], users = [], projects = [];
+        
+        function allowDrop(e) { e.preventDefault(); }
+        function drag(e) { e.dataTransfer.setData('text', e.target.id); }
+        function drop(e) {
+            e.preventDefault();
+            const taskId = e.dataTransfer.getData('text').replace('task', '');
+            const newStatus = e.target.id || e.target.parentElement.id;
+            if (['todo','progress','done'].includes(newStatus)) updateTaskStatus(taskId, newStatus);
+        }
+        
+        function showMsg(element, msg, isError = false) {
+            element.innerHTML = `<span class="${isError ? 'error' : 'success'}">${msg}</span>`;
+            setTimeout(() => element.innerHTML = '', 3000);
+        }
+        
+        async function fetchData(endpoint) {
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return await res.json();
+            } catch (err) { console.error(err); return []; }
+        }
+        
+        async function loadUsers() {
+            users = await fetchData('/api/users');
+            const assigneeSelect = document.getElementById('taskAssignee');
+            const filterSelect = document.getElementById('filterAssignee');
+            assigneeSelect.innerHTML = filterSelect.innerHTML = '<option value="">Select assignee</option>';
+            users.forEach(u => {
+                const opt1 = document.createElement('option');
+                opt1.value = u.id; opt1.textContent = u.username;
+                assigneeSelect.appendChild(opt1);
+                const opt2 = document.createElement('option');
+                opt2.value = u.id; opt2.textContent = u.username;
+                filterSelect.appendChild(opt2);
+            });
+        }
+        
+        async function createProject() {
+            const name = document.getElementById('projectName').value;
+            if (!name) return showMsg(document.getElementById('projectMsg'), 'Enter project name', true);
+            try {
+                await fetch(`${API_BASE}/api/projects`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                });
+                showMsg(document.getElementById('projectMsg'), 'Project created');
+                loadProjects();
+            } catch (err) { showMsg(document.getElementById('projectMsg'), 'Failed to create project', true); }
+        }
+        
+        async function loadProjects() {
+            projects = await fetchData('/api/projects');
+            const select = document.getElementById('taskProject');
+            select.innerHTML = '<option>Select project</option>';
+            projects.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id; opt.textContent = p.name;
+                select.appendChild(opt);
+            });
+            document.getElementById('projects').innerHTML = projects.map(p => 
+                `<div>${p.name} - ${p.progress_percentage}%</div>`).join('');
+        }
+        
+        async function addTask() {
+            const title = document.getElementById('taskTitle').value;
+            const projectId = document.getElementById('taskProject').value;
+            if (!title || !projectId) return showMsg(document.getElementById('taskMsg'), 'Fill required fields', true);
+            try {
+                await fetch(`${API_BASE}/api/projects/${projectId}/tasks`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        description: document.getElementById('taskDesc').value,
+                        deadline: document.getElementById('taskDeadline').value,
+                        assignee_id: document.getElementById('taskAssignee').value || null,
+                        status: 'todo'
+                    })
+                });
+                showMsg(document.getElementById('taskMsg'), 'Task added');
+                loadKanban();
+            } catch (err) { showMsg(document.getElementById('taskMsg'), 'Failed to add task', true); }
+        }
+        
+        async function updateTaskStatus(taskId, status) {
+            try {
+                await fetch(`${API_BASE}/api/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                loadKanban();
+            } catch (err) { console.error('Update failed:', err); }
+        }
+        
+        async function loadKanban() {
+            tasks = await fetchData('/api/tasks');
+            ['todo', 'progress', 'done'].forEach(status => {
+                const col = document.getElementById(status);
+                col.innerHTML = tasks.filter(t => t.status === status).map(task => {
+                    const assignee = users.find(u => u.id === task.assignee_id);
+                    const overdue = task.deadline && new Date(task.deadline) < new Date();
+                    return `<div class="task ${overdue ? 'overdue' : ''}" id="task${task.id}" draggable="true" ondragstart="drag(event)">
+                        ${task.title} - ${assignee ? assignee.username : 'Unassigned'}
+                    </div>`;
+                }).join('');
+            });
+            filterTasks();
+        }
+        
+        function filterTasks() {
+            const assigneeId = document.getElementById('filterAssignee').value;
+            const filtered = assigneeId ? tasks.filter(t => t.assignee_id == assigneeId) : tasks;
+            document.getElementById('filteredTasks').innerHTML = filtered.map(t => {
+                const assignee = users.find(u => u.id === t.assignee_id);
+                const overdue = t.deadline && new Date(t.deadline) < new Date();
+                return `<div class="task ${overdue ? 'overdue' : ''}">${t.title} - Assignee: ${assignee ? assignee.username : 'None'}</div>`;
+            }).join('');
+        }
+        
+        window.onload = () => { loadUsers(); loadProjects(); loadKanban(); setInterval(loadKanban, 10000); };
+    </script>
+</body>
+</html>

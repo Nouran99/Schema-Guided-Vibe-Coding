@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "vibe_prompt": "Create a digital clock with timezone selection, which sould have minimum features : display current time (hours, minutes, seconds), select from multiple timezones, 12/24 hour format toggle, auto-update every second",
+  "project_dir": "output\\baseline_create_a_digital_clock_with_ti_20260119_000239",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Display Current Time",
+        "description": "As a user, I want to see the current time (hours, minutes, seconds) updating every second so I can track time accurately.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Timezone Selection",
+        "description": "As a user, I want to select from multiple timezones to view the time in different regions.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "12/24 Hour Format Toggle",
+        "description": "As a user, I want to toggle between 12-hour and 24-hour time formats for my preference.",
+        "priority": "medium"
+      },
+      {
+        "id": "US004",
+        "title": "Auto-Update Time",
+        "description": "As a user, I want the clock to automatically update every second without needing to refresh the page.",
+        "priority": "high"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI\nfrom datetime import datetime\nimport pytz\nfrom fastapi.middleware.cors import CORSMiddleware\n\napp = FastAPI()\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\n@app.get(\"/time/{timezone}\")\ndef get_time(timezone: str):\n    try:\n        tz = pytz.timezone(timezone)\n        now = datetime.now(tz)\n        return {\n            \"hours\": now.hour,\n            \"minutes\": now.minute,\n            \"seconds\": now.second,\n            \"timezone\": timezone\n        }\n    except:\n        return {\"error\": \"Invalid timezone\"}\n\n@app.get(\"/timezones\")\ndef get_timezones():\n    return {\"timezones\": pytz.all_timezones[:10]}",
+    "frontend_code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Digital Clock</title>\n    <style>\n        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }\n        #clock { font-size: 48px; margin: 20px; }\n        select, button { padding: 10px; margin: 5px; font-size: 16px; }\n    </style>\n</head>\n<body>\n    <h1>Digital Clock</h1>\n    <div id=\"clock\">00:00:00</div>\n    <select id=\"timezone\">\n        <option value=\"UTC\">UTC</option>\n        <option value=\"America/New_York\">New York</option>\n        <option value=\"Europe/London\">London</option>\n        <option value=\"Asia/Tokyo\">Tokyo</option>\n    </select>\n    <button id=\"toggleFormat\">Switch to 12-hour</button>\n    <script>\n        let is24Hour = true;\n        let currentTimezone = 'UTC';\n        \n        function fetchTime() {\n            fetch(`http://localhost:8000/time/${currentTimezone}`)\n                .then(res => res.json())\n                .then(data => {\n                    if (data.error) return;\n                    let { hours, minutes, seconds } = data;\n                    if (!is24Hour) {\n                        const ampm = hours >= 12 ? 'PM' : 'AM';\n                        hours = hours % 12 || 12;\n                        document.getElementById('clock').textContent = \n                            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;\n                    } else {\n                        document.getElementById('clock').textContent = \n                            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;\n                    }\n                });\n        }\n        \n        document.getElementById('timezone').addEventListener('change', (e) => {\n            currentTimezone = e.target.value;\n            fetchTime();\n        });\n        \n        document.getElementById('toggleFormat').addEventListener('click', () => {\n            is24Hour = !is24Hour;\n            document.getElementById('toggleFormat').textContent = \n                is24Hour ? 'Switch to 12-hour' : 'Switch to 24-hour';\n            fetchTime();\n        });\n        \n        setInterval(fetchTime, 1000);\n        fetchTime();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

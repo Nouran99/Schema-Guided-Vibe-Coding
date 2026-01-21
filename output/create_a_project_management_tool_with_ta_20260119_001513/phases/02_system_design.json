@@ -1,0 +1,71 @@
+{
+  "models": [
+    {
+      "name": "Project",
+      "fields": [
+        "id: int",
+        "name: str",
+        "created_at: datetime",
+        "progress_percentage: float"
+      ]
+    },
+    {
+      "name": "Task",
+      "fields": [
+        "id: int",
+        "title: str",
+        "description: str",
+        "status: str",
+        "deadline: datetime",
+        "project_id: int",
+        "assignee_id: int"
+      ]
+    },
+    {
+      "name": "User",
+      "fields": [
+        "id: int",
+        "username: str",
+        "email: str"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "description": "Create a new project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects",
+      "description": "Get all projects with progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/{project_id}/tasks",
+      "description": "Add a task to a project"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/tasks/{task_id}",
+      "description": "Update task status, assignee, or deadline"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks",
+      "description": "Get tasks, filter by assignee or project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/{project_id}/tasks",
+      "description": "Get all tasks for a specific project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/tasks/{task_id}",
+      "description": "Delete a task"
+    }
+  ],
+  "architecture_notes": "Simple REST API with Project, Task, User models. Kanban board uses Task status updates. Progress calculated from task statuses. Filtering and overdue highlighting handled via query parameters on GET /api/tasks."
+}

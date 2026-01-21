@@ -1,0 +1,49 @@
+{
+  "success": true,
+  "vibe_prompt": "Build a weather dashboard that shows current conditions and 5-day forecast, which sould have minimum features : search by city name, display current temperature and conditions, show humidity and wind speed, 5-day forecast display, weather icons, unit toggle (Celsius/Fahrenheit), save favorite locations",
+  "project_dir": "output\\baseline_build_a_weather_dashboard_that_20260119_001053",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Search by City Name",
+        "description": "As a user, I want to search for weather by city name so I can view conditions for any location.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Display Current Conditions",
+        "description": "As a user, I want to see current temperature, conditions, humidity, and wind speed for the selected city.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "5-Day Forecast Display",
+        "description": "As a user, I want to view a 5-day weather forecast with daily summaries.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Weather Icons",
+        "description": "As a user, I want to see visual icons representing weather conditions for better clarity.",
+        "priority": "medium"
+      },
+      {
+        "id": "US005",
+        "title": "Unit Toggle",
+        "description": "As a user, I want to toggle between Celsius and Fahrenheit units for temperature display.",
+        "priority": "medium"
+      },
+      {
+        "id": "US006",
+        "title": "Save Favorite Locations",
+        "description": "As a user, I want to save favorite cities for quick access to their weather.",
+        "priority": "low"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom fastapi.middleware.cors import CORSMiddleware\nimport requests\nimport os\nfrom typing import List\n\napp = FastAPI()\napp.add_middleware(CORSMiddleware, allow_origins=[\"*\"], allow_methods=[\"*\"], allow_headers=[\"*\"])\n\nAPI_KEY = os.getenv(\"WEATHER_API_KEY\", \"demo_key\")\nBASE_URL = \"http://api.openweathermap.org/data/2.5/\"\n\nfavorites = []\n\n@app.get(\"/weather/{city}\")\ndef get_weather(city: str, units: str = \"metric\"):\n    url = f\"{BASE_URL}weather?q={city}&appid={API_KEY}&units={units}\"\n    response = requests.get(url)\n    if response.status_code != 200:\n        raise HTTPException(status_code=404, detail=\"City not found\")\n    data = response.json()\n    return {\"city\": data[\"name\"], \"temp\": data[\"main\"][\"temp\"], \"conditions\": data[\"weather\"][0][\"description\"], \"humidity\": data[\"main\"][\"humidity\"], \"wind_speed\": data[\"wind\"][\"speed\"], \"icon\": data[\"weather\"][0][\"icon\"]}\n\n@app.get(\"/forecast/{city}\")\ndef get_forecast(city: str, units: str = \"metric\"):\n    url = f\"{BASE_URL}forecast?q={city}&appid={API_KEY}&units={units}\"\n    response = requests.get(url)\n    if response.status_code != 200:\n        raise HTTPException(status_code=404, detail=\"City not found\")\n    data = response.json()\n    forecast = []\n    for item in data[\"list\"][:5]:\n        forecast.append({\"date\": item[\"dt_txt\"], \"temp\": item[\"main\"][\"temp\"], \"conditions\": item[\"weather\"][0][\"description\"], \"icon\": item[\"weather\"][0][\"icon\"]})\n    return forecast\n\n@app.get(\"/favorites\")\ndef get_favorites() -> List[str]:\n    return favorites\n\n@app.post(\"/favorites/{city}\")\ndef add_favorite(city: str):\n    if city not in favorites:\n        favorites.append(city)\n    return {\"message\": \"Favorite added\"}\n\n@app.delete(\"/favorites/{city}\")\ndef remove_favorite(city: str):\n    if city in favorites:\n        favorites.remove(city)\n    return {\"message\": \"Favorite removed\"}",
+    "frontend_code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Weather Dashboard</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }\n        .search { margin-bottom: 20px; }\n        input, button { padding: 10px; margin: 5px; }\n        .current { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-bottom: 20px; }\n        .forecast { display: flex; justify-content: space-between; flex-wrap: wrap; }\n        .day { background: #e0e0e0; padding: 10px; border-radius: 5px; margin: 5px; text-align: center; flex: 1; }\n        .favorites { margin-top: 20px; }\n        .favorite-item { display: inline-block; margin: 5px; padding: 5px 10px; background: #d0d0d0; border-radius: 3px; cursor: pointer; }\n    </style>\n</head>\n<body>\n    <h1>Weather Dashboard</h1>\n    <div class=\"search\">\n        <input type=\"text\" id=\"cityInput\" placeholder=\"Enter city name\">\n        <button onclick=\"searchWeather()\">Search</button>\n        <button onclick=\"toggleUnits()\">Toggle \u00b0C/\u00b0F</button>\n    </div>\n    <div id=\"currentWeather\" class=\"current\"></div>\n    <div id=\"forecast\" class=\"forecast\"></div>\n    <div class=\"favorites\">\n        <h3>Favorites</h3>\n        <div id=\"favoritesList\"></div>\n        <button onclick=\"addFavorite()\">Add Current to Favorites</button>\n    </div>\n    <script>\n        let units = 'metric';\n        let currentCity = '';\n        const apiBase = 'http://localhost:8000';\n\n        async function searchWeather() {\n            const city = document.getElementById('cityInput').value;\n            if (!city) return;\n            currentCity = city;\n            try {\n                const response = await fetch(`${apiBase}/weather/${city}?units=${units}`);\n                const data = await response.json();\n                displayCurrent(data);\n                loadForecast(city);\n                loadFavorites();\n            } catch (error) {\n                alert('City not found');\n            }\n        }\n\n        function displayCurrent(data) {\n            const unitSymbol = units === 'metric' ? '\u00b0C' : '\u00b0F';\n            document.getElementById('currentWeather').innerHTML = `\n                <h2>${data.city}</h2>\n                <img src=\"http://openweathermap.org/img/wn/${data.icon}.png\" alt=\"${data.conditions}\">\n                <p>Temperature: ${data.temp} ${unitSymbol}</p>\n                <p>Conditions: ${data.conditions}</p>\n                <p>Humidity: ${data.humidity}%</p>\n                <p>Wind Speed: ${data.wind_speed} m/s</p>\n            `;\n        }\n\n        async function loadForecast(city) {\n            try {\n                const response = await fetch(`${apiBase}/forecast/${city}?units=${units}`);\n                const forecast = await response.json();\n                displayForecast(forecast);\n            } catch (error) {\n                console.error('Forecast load failed');\n            }\n        }\n\n        function displayForecast(forecast) {\n            const unitSymbol = units === 'metric' ? '\u00b0C' : '\u00b0F';\n            let html = '';\n            forecast.forEach(day => {\n                html += `<div class=\"day\">\n                    <p>${new Date(day.date).toLocaleDateString()}</p>\n                    <img src=\"http://openweathermap.org/img/wn/${day.icon}.png\" alt=\"${day.conditions}\">\n                    <p>${day.temp} ${unitSymbol}</p>\n                    <p>${day.conditions}</p>\n                </div>`;\n            });\n            document.getElementById('forecast').innerHTML = html;\n        }\n\n        function toggleUnits() {\n            units = units === 'metric' ? 'imperial' : 'metric';\n            if (currentCity) {\n                searchWeather();\n            }\n        }\n\n        async function loadFavorites() {\n            try {\n                const response = await fetch(`${apiBase}/favorites`);\n                const favorites = await response.json();\n                let html = '';\n                favorites.forEach(city => {\n                    html += `<span class=\"favorite-item\" onclick=\"loadFavorite('${city}')\">${city}</span>`;\n                });\n                document.getElementById('favoritesList').innerHTML = html;\n            } catch (error) {\n                console.error('Favorites load failed');\n            }\n        }\n\n        function loadFavorite(city) {\n            document.getElementById('cityInput').value = city;\n            searchWeather();\n        }\n\n        async function addFavorite() {\n            if (!currentCity) return;\n            try {\n                await fetch(`${apiBase}/favorites/${currentCity}`, { method: 'POST' });\n                loadFavorites();\n            } catch (error) {\n                console.error('Add favorite failed');\n            }\n        }\n\n        loadFavorites();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

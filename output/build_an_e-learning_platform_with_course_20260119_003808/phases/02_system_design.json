@@ -1,0 +1,90 @@
+{
+  "models": [
+    {
+      "name": "Course",
+      "fields": [
+        "id: int",
+        "instructor_id: int",
+        "title: str",
+        "description: str",
+        "created_at: datetime"
+      ]
+    },
+    {
+      "name": "Lesson",
+      "fields": [
+        "id: int",
+        "course_id: int",
+        "title: str",
+        "content_type: str",
+        "content_url: str",
+        "order: int",
+        "is_completed: bool"
+      ]
+    },
+    {
+      "name": "Quiz",
+      "fields": [
+        "id: int",
+        "lesson_id: int",
+        "title: str",
+        "questions: json",
+        "passing_score: int"
+      ]
+    },
+    {
+      "name": "Enrollment",
+      "fields": [
+        "id: int",
+        "learner_id: int",
+        "course_id: int",
+        "progress_percent: int",
+        "completed_at: datetime",
+        "certificate_url: str"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/courses",
+      "description": "List all courses"
+    },
+    {
+      "method": "POST",
+      "path": "/api/courses",
+      "description": "Create a new course"
+    },
+    {
+      "method": "POST",
+      "path": "/api/courses/{course_id}/lessons",
+      "description": "Add lesson to course"
+    },
+    {
+      "method": "POST",
+      "path": "/api/lessons/{lesson_id}/quiz",
+      "description": "Create quiz with multiple question types"
+    },
+    {
+      "method": "POST",
+      "path": "/api/enrollments",
+      "description": "Enroll learner in course"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/lessons/{lesson_id}/complete",
+      "description": "Mark lesson as complete"
+    },
+    {
+      "method": "POST",
+      "path": "/api/quizzes/{quiz_id}/submit",
+      "description": "Submit and auto-grade quiz"
+    },
+    {
+      "method": "GET",
+      "path": "/api/learners/{learner_id}/dashboard",
+      "description": "Get learner dashboard with progress"
+    }
+  ],
+  "architecture_notes": "Updated Quiz model uses 'questions: json' field to support multiple question types. Added 'is_completed' to Lesson for progress tracking. Enrollment includes 'certificate_url' for certificate generation. Added PUT endpoint for marking lessons complete. All core user stories addressed."
+}

@@ -1,0 +1,59 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Number Input",
+      "description": "As a user, I want to input numbers so that I can perform calculations",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Addition Operation",
+      "description": "As a user, I want to add two numbers so that I can get their sum",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Subtraction Operation",
+      "description": "As a user, I want to subtract one number from another so that I can get the difference",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Multiplication Operation",
+      "description": "As a user, I want to multiply two numbers so that I can get their product",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Division Operation",
+      "description": "As a user, I want to divide one number by another so that I can get the quotient",
+      "priority": "high"
+    },
+    {
+      "id": "US006",
+      "title": "Result Display",
+      "description": "As a user, I want to see the calculation result so that I know the answer",
+      "priority": "high"
+    },
+    {
+      "id": "US007",
+      "title": "Clear Function",
+      "description": "As a user, I want to clear the input and result so that I can start a new calculation",
+      "priority": "high"
+    },
+    {
+      "id": "US008",
+      "title": "Decimal Input",
+      "description": "As a user, I want to input decimal numbers so that I can perform precise calculations",
+      "priority": "medium"
+    },
+    {
+      "id": "US009",
+      "title": "Error Handling for Division by Zero",
+      "description": "As a user, I want to see an error message when dividing by zero so that I avoid incorrect results",
+      "priority": "medium"
+    }
+  ],
+  "summary": "Build a simple calculator with basic arithmetic operations (add, subtract, multiply, divide), number input, result display, and clear function to enable users to perform everyday calculations efficiently."
+}

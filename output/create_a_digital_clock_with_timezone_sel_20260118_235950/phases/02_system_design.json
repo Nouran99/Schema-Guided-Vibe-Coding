@@ -1,0 +1,56 @@
+{
+  "models": [
+    {
+      "name": "UserSettings",
+      "fields": [
+        "id: int",
+        "user_id: str",
+        "timezone: str",
+        "hour_format: str",
+        "updated_at: datetime"
+      ]
+    },
+    {
+      "name": "Timezone",
+      "fields": [
+        "id: int",
+        "label: str",
+        "value: str",
+        "offset: str"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/current-time",
+      "description": "Get current time in specified timezone"
+    },
+    {
+      "method": "GET",
+      "path": "/api/timezones",
+      "description": "List all available timezones"
+    },
+    {
+      "method": "GET",
+      "path": "/api/user-settings",
+      "description": "Get user settings"
+    },
+    {
+      "method": "POST",
+      "path": "/api/user-settings",
+      "description": "Create or update user settings"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/user-settings/timezone",
+      "description": "Update user timezone"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/user-settings/hour-format",
+      "description": "Update 12/24 hour format"
+    }
+  ],
+  "architecture_notes": "Simple client-server app. Frontend polls /api/current-time every second for auto-update. UserSettings persists format/timezone preferences. Timezone model stores labels for clear display. Default timezone handled client-side initially."
+}

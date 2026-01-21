@@ -1,0 +1,65 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "User Registration",
+      "description": "As a new user, I want to register an account so that I can access the chat application.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "User Login",
+      "description": "As a registered user, I want to log in to my account so that I can join chat rooms.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Create Chat Room",
+      "description": "As a logged-in user, I want to create a new chat room so that I can start a conversation.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Join Chat Room",
+      "description": "As a user, I want to join an existing chat room so that I can participate in discussions.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Send Real-Time Message",
+      "description": "As a user in a chat room, I want to send messages in real-time so that others see them instantly.",
+      "priority": "high"
+    },
+    {
+      "id": "US006",
+      "title": "View Message History",
+      "description": "As a user, I want to see past messages in a room so that I can catch up on conversations.",
+      "priority": "medium"
+    },
+    {
+      "id": "US007",
+      "title": "See User Status",
+      "description": "As a user, I want to see who is online/offline so that I know who is available to chat.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "Share Files/Images",
+      "description": "As a user, I want to upload and share files/images in chat so that I can share media easily.",
+      "priority": "medium"
+    },
+    {
+      "id": "US009",
+      "title": "Typing Indicator",
+      "description": "As a user, I want to see when others are typing so that I know a response is coming.",
+      "priority": "low"
+    },
+    {
+      "id": "US010",
+      "title": "Unread Message Count",
+      "description": "As a user, I want to see unread message counts so that I know what needs my attention.",
+      "priority": "low"
+    }
+  ],
+  "summary": "A real-time chat application enabling users to register, log in, create/join rooms, send messages, view history, see user status, share files, with typing indicators and unread counts."
+}

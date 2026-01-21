@@ -1,0 +1,43 @@
+{
+  "models": [
+    {
+      "name": "Calculation",
+      "fields": [
+        "id: int",
+        "operand1: float",
+        "operand2: float",
+        "operation: str",
+        "result: float",
+        "created_at: datetime"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/calculate",
+      "description": "Perform arithmetic calculation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/calculations",
+      "description": "Get calculation history"
+    },
+    {
+      "method": "GET",
+      "path": "/api/calculations/{id}",
+      "description": "Get specific calculation"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/calculations/{id}",
+      "description": "Delete calculation record"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/calculations",
+      "description": "Clear all calculations"
+    }
+  ],
+  "architecture_notes": "Simple REST API for calculator. Single Calculation model stores operands, operation, result, timestamp. POST /calculate handles all operations (add, subtract, multiply, divide) with validation for division by zero. GET endpoints provide history. DELETE endpoints support clear functionality. Frontend handles input, display, and error messages."
+}

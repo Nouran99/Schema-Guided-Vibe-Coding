@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        input, select, button { margin: 5px; padding: 8px; }
+        #transactionsList, #categoriesList { list-style: none; padding: 0; }
+        li { padding: 5px; border-bottom: 1px solid #eee; }
+        .income { color: green; }
+        .expense { color: red; }
+        .charts { display: flex; flex-wrap: wrap; }
+        .chart-container { width: 300px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Personal Finance Tracker</h1>
+
+    <div class="section">
+        <h2>Add Transaction</h2>
+        <input id="desc" placeholder="Description">
+        <input id="amount" type="number" placeholder="Amount">
+        <select id="type">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+        <select id="category"></select>
+        <input id="date" type="date">
+        <button onclick="addTransaction()">Add</button>
+    </div>
+
+    <div class="section">
+        <h2>Transactions</h2>
+        <div>
+            <input id="startDate" type="date"> to <input id="endDate" type="date">
+            <button onclick="filterTransactions()">Filter</button>
+        </div>
+        <ul id="transactionsList"></ul>
+    </div>
+
+    <div class="section">
+        <h2>Categories & Budgets</h2>
+        <input id="catName" placeholder="Category Name">
+        <input id="catBudget" type="number" placeholder="Budget">
+        <button onclick="addCategory()">Add Category</button>
+        <ul id="categoriesList"></ul>
+    </div>
+
+    <div class="section">
+        <h2>Budget Progress</h2>
+        <div id="progress"></div>
+    </div>
+
+    <div class="section">
+        <h2>Charts</h2>
+        <div class="charts">
+            <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        let pieChart, barChart;
+
+        async function fetchData(endpoint) {
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`);
+                return await res.json();
+            } catch (err) {
+                console.error('Fetch error:', err);
+                return [];
+            }
+        }
+
+        async function postData(endpoint, data) {
+            await fetch(`${API_BASE}${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            loadAll();
+        }
+
+        async function addTransaction() {
+            const desc = document.getElementById('desc').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+            const categoryId = parseInt(document.getElementById('category').value);
+            const date = document.getElementById('date').value;
+            if (!desc || !amount || !date || !categoryId) return alert('Fill all fields');
+            await postData('/transactions', { description: desc, amount, type, category_id: categoryId, date });
+        }
+
+        async function addCategory() {
+            const name = document.getElementById('catName').value;
+            const budget = parseFloat(document.getElementById('catBudget').value);
+            if (!name || !budget) return alert('Fill all fields');
+            await postData('/categories', { name, budget });
+        }
+
+        async function filterTransactions() {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            let url = '/transactions';
+            if (start && end) url += `?start_date=${start}&end_date=${end}`;
+            const trans = await fetchData(url);
+            displayTransactions(trans);
+        }
+
+        function displayTransactions(trans) {
+            const transList = document.getElementById('transactionsList');
+            transList.innerHTML = trans.map(t => 
+                `<li class="${t.type}">${t.date}: ${t.description} - $${t.amount} (Category: ${t.category_id})</li>`
+            ).join('');
+        }
+
+        function updateCharts(progress) {
+            const ctxPie = document.getElementById('pieChart').getContext('2d');
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            
+            if (pieChart) pieChart.destroy();
+            if (barChart) barChart.destroy();
+            
+            const labels = progress.map(p => p.category_name);
+            const spent = progress.map(p => p.spent);
+            
+            pieChart = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{ data: spent, backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] }]
+                }
+            });
+            
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Spent', data: spent, backgroundColor: '#36A2EB' }]
+                }
+            });
+        }
+
+        async function loadAll() {
+            const trans = await fetchData('/transactions');
+            const cats = await fetchData('/categories');
+            const progress = await fetchData('/budget-progress');
+
+            displayTransactions(trans);
+            
+            const catList = document.getElementById('categoriesList');
+            catList.innerHTML = cats.map(c => 
+                `<li>${c.name}: Budget $${c.budget}</li>`
+            ).join('');
+            
+            const catSelect = document.getElementById('category');
+            catSelect.innerHTML = cats.map(c => 
+                `<option value="${c.id}">${c.name}</option>`
+            ).join('');
+            
+            const progDiv = document.getElementById('progress');
+            progDiv.innerHTML = progress.map(p => 
+                `<div>${p.category_name}: $${p.spent} / $${p.budget}</div>`
+            ).join('');
+            
+            updateCharts(progress);
+        }
+
+        loadAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #f0f8ff; }
+        h1 { color: #333; }
+        .search { display: flex; gap: 10px; margin-bottom: 20px; }
+        input, button { padding: 10px; font-size: 16px; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .current, .forecast, .favorites { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .forecast-day { display: inline-block; margin: 10px; text-align: center; }
+        .favorite-item { margin: 5px 0; }
+        .error { color: red; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <div class="search">
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button onclick="searchCity()">Search</button>
+        <button onclick="toggleUnit()">Toggle °C/°F</button>
+    </div>
+    <div id="error" class="error"></div>
+    <div id="currentWeather" class="current">Search a city to see weather.</div>
+    <div id="forecast" class="forecast">5-day forecast will appear here.</div>
+    <div class="favorites">
+        <h3>Favorites</h3>
+        <button onclick="loadFavorites()">Load Favorites</button>
+        <button onclick="saveFavorite()">Save Current as Favorite</button>
+        <div id="favoritesList"></div>
+    </div>
+    <script>
+        let currentCity = null;
+        let unit = 'C';
+        let currentWeatherData = null;
+        let forecastData = null;
+        function showError(msg) { document.getElementById('error').textContent = msg; }
+        function clearError() { showError(''); }
+        async function searchCity() {
+            const city = document.getElementById('cityInput').value.trim();
+            if (!city) { showError('Please enter a city name'); return; }
+            clearError();
+            try {
+                const res = await fetch(`/api/cities/search?q=${encodeURIComponent(city)}`);
+                if (!res.ok) throw new Error('Search failed');
+                const cities = await res.json();
+                if (cities.length > 0) {
+                    currentCity = cities[0];
+                    await fetchWeather();
+                } else showError('City not found');
+            } catch (e) { showError('Error searching city'); console.error(e); }
+        }
+        function convertTemp(temp, fromUnit, toUnit) {
+            if (fromUnit === toUnit) return temp;
+            if (fromUnit === 'C' && toUnit === 'F') return (temp * 9/5) + 32;
+            if (fromUnit === 'F' && toUnit === 'C') return (temp - 32) * 5/9;
+            return temp;
+        }
+        async function fetchWeather() {
+            if (!currentCity) return;
+            clearError();
+            try {
+                const currentRes = await fetch(`/api/weather/current?city_id=${currentCity.id}`);
+                if (!currentRes.ok) throw new Error('Current weather fetch failed');
+                currentWeatherData = await currentRes.json();
+                const forecastRes = await fetch(`/api/weather/forecast?city_id=${currentCity.id}`);
+                if (!forecastRes.ok) throw new Error('Forecast fetch failed');
+                forecastData = await forecastRes.json();
+                updateDisplay();
+            } catch (e) { showError('Error fetching weather'); console.error(e); }
+        }
+        function updateDisplay() {
+            if (!currentWeatherData || !forecastData) return;
+            const temp = convertTemp(currentWeatherData.temperature, currentWeatherData.unit, unit).toFixed(1);
+            document.getElementById('currentWeather').innerHTML = `
+                <h2>${currentCity.name}, ${currentCity.country}</h2>
+                <p>${temp}°${unit} - ${currentWeatherData.conditions} (Humidity: ${currentWeatherData.humidity}%, Wind: ${currentWeatherData.wind_speed} m/s)</p>
+            `;
+            let forecastHTML = '<h3>5-Day Forecast</h3>';
+            forecastData.forEach(day => {
+                const dayTemp = convertTemp(day.temperature, day.unit, unit).toFixed(1);
+                forecastHTML += `
+                    <div class="forecast-day">
+                        <p>${new Date(day.timestamp).toLocaleDateString()}</p>
+                        <p>${dayTemp}°${unit}</p>
+                        <p>${day.conditions}</p>
+                    </div>
+                `;
+            });
+            document.getElementById('forecast').innerHTML = forecastHTML;
+        }
+        function toggleUnit() {
+            unit = unit === 'C' ? 'F' : 'C';
+            fetch('/api/weather/unit', { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({unit}) });
+            if (currentWeatherData) updateDisplay();
+        }
+        async function saveFavorite() {
+            if (!currentCity) { showError('No city selected'); return; }
+            clearError();
+            try {
+                const res = await fetch('/api/favorites', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({city_id: currentCity.id}) });
+                if (!res.ok) throw new Error('Save failed');
+                alert('Saved to favorites');
+            } catch (e) { showError('Error saving favorite'); console.error(e); }
+        }
+        async function loadFavorites() {
+            clearError();
+            try {
+                const res = await fetch('/api/favorites');
+                if (!res.ok) throw new Error('Load failed');
+                const favorites = await res.json();
+                let list = '<h4>Favorite Cities</h4>';
+                favorites.forEach(fav => {
+                    list += `<div class="favorite-item">${fav.city_name} (${fav.country}) <button onclick="removeFavorite(${fav.id})">Remove</button></div>`;
+                });
+                document.getElementById('favoritesList').innerHTML = list;
+            } catch (e) { showError('Error loading favorites'); console.error(e); }
+        }
+        async function removeFavorite(id) {
+            try {
+                const res = await fetch(`/api/favorites/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                loadFavorites();
+            } catch (e) { showError('Error removing favorite'); console.error(e); }
+        }
+    </script>
+</body>
+</html>

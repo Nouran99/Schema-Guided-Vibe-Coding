@@ -1,0 +1,96 @@
+{
+  "dataset_name": "VibePrompts-5",
+  "description": "5 vibe prompts for Pentagon Protocol evaluation (1 easy, 1 medium, 3 complex)",
+  "version": "2.0",
+  "prompts": [
+    {
+      "id": "VP01",
+      "prompt": "Build a simple calculator",
+      "complexity": "easy",
+      "expected_features": [
+        "basic arithmetic operations (add, subtract, multiply, divide)",
+        "number input",
+        "display result",
+        "clear function"
+      ],
+      "description": "A basic calculator with four operations"
+    },
+    {
+      "id": "VP02",
+      "prompt": "Create a todo list app with due dates and priority levels",
+      "complexity": "medium",
+      "expected_features": [
+        "add tasks with title",
+        "set due date for tasks",
+        "assign priority (high/medium/low)",
+        "mark tasks complete",
+        "delete tasks",
+        "filter by priority",
+        "sort by due date"
+      ],
+      "description": "Todo app with scheduling and prioritization"
+    },
+    {
+      "id": "VP03",
+      "prompt": "Build a personal finance tracker with expense categories, monthly budgets, and spending analytics with charts",
+      "complexity": "complex",
+      "expected_features": [
+        "add income and expenses",
+        "categorize transactions",
+        "set monthly budget per category",
+        "track budget vs actual spending",
+        "visualize spending by category (pie chart)",
+        "show monthly trends (line/bar chart)",
+        "filter by date range",
+        "export data"
+      ],
+      "description": "Full-featured expense tracker with budgeting and visualization"
+    },
+    {
+      "id": "VP04",
+      "prompt": "Create a project management tool with tasks, team members, deadlines, progress tracking, and a kanban board view",
+      "complexity": "complex",
+      "expected_features": [
+        "create projects",
+        "add tasks to projects",
+        "assign tasks to team members",
+        "set deadlines",
+        "track task status (todo/in-progress/done)",
+        "kanban board drag-and-drop interface",
+        "progress percentage per project",
+        "filter tasks by assignee",
+        "overdue task highlighting"
+      ],
+      "description": "Project management with kanban board and team collaboration"
+    },
+    {
+      "id": "VP05",
+      "prompt": "Build an inventory management system with products, stock levels, suppliers, low-stock alerts, and sales tracking",
+      "complexity": "complex",
+      "expected_features": [
+        "add/edit/delete products",
+        "track stock quantities",
+        "manage suppliers",
+        "link products to suppliers",
+        "low stock alerts (configurable threshold)",
+        "record sales/stock out",
+        "record purchases/stock in",
+        "inventory valuation report",
+        "stock movement history",
+        "search and filter products"
+      ],
+      "description": "Complete inventory management with supplier and sales tracking"
+    }
+  ],
+  "complexity_distribution": {
+    "easy": 1,
+    "medium": 1,
+    "complex": 3
+  },
+  "evaluation_criteria": {
+    "completeness": "Percentage of expected features implemented",
+    "executability": "Code runs without errors",
+    "requirement_alignment": "Generated code matches prompt intent",
+    "consistency": "Similar outputs across multiple runs"
+  }
+}

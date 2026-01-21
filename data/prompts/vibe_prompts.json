@@ -1,0 +1,176 @@
+{
+  "dataset_name": "VibePrompts-10",
+  "description": "10 vibe prompts for Pentagon Protocol evaluation (2 easy, 2 medium, 6 complex)",
+  "version": "3.0",
+  "prompts": [
+    {
+      "id": "VP01",
+      "prompt": "Build a simple calculator",
+      "complexity": "easy",
+      "expected_features": [
+        "basic arithmetic operations (add, subtract, multiply, divide)",
+        "number input",
+        "display result",
+        "clear function"
+      ],
+      "description": "A basic calculator with four operations"
+    },
+    {
+      "id": "VP02",
+      "prompt": "Create a digital clock with timezone selection",
+      "complexity": "easy",
+      "expected_features": [
+        "display current time (hours, minutes, seconds)",
+        "select from multiple timezones",
+        "12/24 hour format toggle",
+        "auto-update every second"
+      ],
+      "description": "A simple digital clock with timezone support"
+    },
+    {
+      "id": "VP03",
+      "prompt": "Create a todo list app with due dates and priority levels",
+      "complexity": "medium",
+      "expected_features": [
+        "add tasks with title",
+        "set due date for tasks",
+        "assign priority (high/medium/low)",
+        "mark tasks complete",
+        "delete tasks",
+        "filter by priority",
+        "sort by due date"
+      ],
+      "description": "Todo app with scheduling and prioritization"
+    },
+    {
+      "id": "VP04",
+      "prompt": "Build a weather dashboard that shows current conditions and 5-day forecast",
+      "complexity": "medium",
+      "expected_features": [
+        "search by city name",
+        "display current temperature and conditions",
+        "show humidity and wind speed",
+        "5-day forecast display",
+        "weather icons",
+        "unit toggle (Celsius/Fahrenheit)",
+        "save favorite locations"
+      ],
+      "description": "Weather app with current conditions and forecast"
+    },
+    {
+      "id": "VP05",
+      "prompt": "Build a personal finance tracker with expense categories, monthly budgets, and spending analytics with charts",
+      "complexity": "complex",
+      "expected_features": [
+        "add income and expenses",
+        "categorize transactions",
+        "set monthly budget per category",
+        "track budget vs actual spending",
+        "visualize spending by category (pie chart)",
+        "show monthly trends (line/bar chart)",
+        "filter by date range",
+        "export data"
+      ],
+      "description": "Full-featured expense tracker with budgeting and visualization"
+    },
+    {
+      "id": "VP06",
+      "prompt": "Create a project management tool with tasks, team members, deadlines, progress tracking, and a kanban board view",
+      "complexity": "complex",
+      "expected_features": [
+        "create projects",
+        "add tasks to projects",
+        "assign tasks to team members",
+        "set deadlines",
+        "track task status (todo/in-progress/done)",
+        "kanban board drag-and-drop interface",
+        "progress percentage per project",
+        "filter tasks by assignee",
+        "overdue task highlighting"
+      ],
+      "description": "Project management with kanban board and team collaboration"
+    },
+    {
+      "id": "VP07",
+      "prompt": "Build an inventory management system with products, stock levels, suppliers, low-stock alerts, and sales tracking",
+      "complexity": "complex",
+      "expected_features": [
+        "add/edit/delete products",
+        "track stock quantities",
+        "manage suppliers",
+        "link products to suppliers",
+        "low stock alerts (configurable threshold)",
+        "record sales/stock out",
+        "record purchases/stock in",
+        "inventory valuation report",
+        "stock movement history",
+        "search and filter products"
+      ],
+      "description": "Complete inventory management with supplier and sales tracking"
+    },
+    {
+      "id": "VP08",
+      "prompt": "Create a real-time chat application with multiple rooms, user authentication, message history, and file sharing",
+      "complexity": "complex",
+      "expected_features": [
+        "user registration and login",
+        "create and join chat rooms",
+        "real-time message sending/receiving",
+        "message history persistence",
+        "user online/offline status",
+        "file/image upload and sharing",
+        "message timestamps",
+        "typing indicators",
+        "unread message count"
+      ],
+      "description": "Real-time chat with rooms, authentication, and file sharing"
+    },
+    {
+      "id": "VP09",
+      "prompt": "Build an e-learning platform with courses, lessons, quizzes, progress tracking, and certificates",
+      "complexity": "complex",
+      "expected_features": [
+        "create and manage courses",
+        "organize lessons within courses",
+        "video/text content support",
+        "create quizzes with multiple question types",
+        "auto-grade quizzes",
+        "track learner progress per course",
+        "mark lessons as complete",
+        "generate completion certificates",
+        "course enrollment system",
+        "dashboard with enrolled courses and progress"
+      ],
+      "description": "E-learning platform with courses, assessments, and certification"
+    },
+    {
+      "id": "VP10",
+      "prompt": "Create a booking and appointment scheduling system with calendar view, availability management, reminders, and customer management",
+      "complexity": "complex",
+      "expected_features": [
+        "define service types and durations",
+        "set available time slots",
+        "calendar view of appointments",
+        "customer booking interface",
+        "prevent double-booking",
+        "customer database with history",
+        "email/notification reminders",
+        "reschedule and cancel appointments",
+        "daily/weekly schedule overview",
+        "booking confirmation system"
+      ],
+      "description": "Appointment scheduling with calendar, availability, and customer management"
+    }
+  ],
+  "complexity_distribution": {
+    "easy": 2,
+    "medium": 2,
+    "complex": 6
+  },
+  "evaluation_criteria": {
+    "completeness": "Percentage of expected features implemented",
+    "executability": "Code runs without errors",
+    "requirement_alignment": "Generated code matches prompt intent",
+    "consistency": "Similar outputs across multiple runs"
+  }
+}

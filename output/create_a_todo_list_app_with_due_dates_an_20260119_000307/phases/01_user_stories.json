@@ -1,0 +1,53 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Add New Task",
+      "description": "As a user, I want to add a task with a title so that I can capture my to-do items.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Set Task Due Date",
+      "description": "As a user, I want to set a due date for tasks so that I can track deadlines.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Assign Task Priority",
+      "description": "As a user, I want to assign high/medium/low priority to tasks so that I can focus on what matters most.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Mark Task Complete",
+      "description": "As a user, I want to mark tasks as complete so that I can track my progress.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Delete Task",
+      "description": "As a user, I want to delete tasks so that I can remove unwanted or completed items.",
+      "priority": "medium"
+    },
+    {
+      "id": "US006",
+      "title": "Filter by Priority",
+      "description": "As a user, I want to filter tasks by priority level so that I can see only high/medium/low items.",
+      "priority": "medium"
+    },
+    {
+      "id": "US007",
+      "title": "Sort by Due Date",
+      "description": "As a user, I want to sort tasks by due date so that I can see upcoming deadlines first.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "View Task List",
+      "description": "As a user, I want to view my list of tasks so that I can see all my to-dos at a glance.",
+      "priority": "low"
+    }
+  ],
+  "summary": "A todo list app enabling users to manage tasks with due dates and priority levels, featuring core actions like add, complete, delete, filter, and sort."
+}

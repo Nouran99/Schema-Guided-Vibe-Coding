@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "vibe_prompt": "Build a simple calculator, which sould have minimum features : basic arithmetic operations (add, subtract, multiply, divide), number input, display result, clear function",
+  "project_dir": "output\\baseline_build_a_simple_calculator__whi_20260118_235913",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Basic Arithmetic Operations",
+        "description": "As a user, I want to perform addition, subtraction, multiplication, and division so that I can calculate results.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Number Input",
+        "description": "As a user, I want to input numbers via buttons to build expressions.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Display Result",
+        "description": "As a user, I want to see the calculation result clearly on the screen.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Clear Function",
+        "description": "As a user, I want to clear the input and result to start a new calculation.",
+        "priority": "high"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI\nfrom fastapi.middleware.cors import CORSMiddleware\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\nclass Calculation(BaseModel):\n    expression: str\n\n@app.post(\"/calculate\")\nasync def calculate(calc: Calculation):\n    try:\n        result = eval(calc.expression)\n        return {\"result\": result}\n    except Exception as e:\n        return {\"error\": str(e)}\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=8000)",
+    "frontend_code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Simple Calculator</title>\n    <style>\n        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f4f4; }\n        .calculator { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }\n        #display { width: 100%; height: 40px; font-size: 20px; text-align: right; margin-bottom: 10px; padding: 5px; }\n        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }\n        button { padding: 15px; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; }\n        button:hover { background: #ddd; }\n        .clear { background: #ff6b6b; color: white; }\n        .operator { background: #4ecdc4; color: white; }\n    </style>\n</head>\n<body>\n    <div class=\"calculator\">\n        <input type=\"text\" id=\"display\" readonly>\n        <div class=\"buttons\">\n            <button onclick=\"appendToDisplay('7')\">7</button>\n            <button onclick=\"appendToDisplay('8')\">8</button>\n            <button onclick=\"appendToDisplay('9')\">9</button>\n            <button onclick=\"appendToDisplay('+')\" class=\"operator\">+</button>\n            <button onclick=\"appendToDisplay('4')\">4</button>\n            <button onclick=\"appendToDisplay('5')\">5</button>\n            <button onclick=\"appendToDisplay('6')\">6</button>\n            <button onclick=\"appendToDisplay('-')\" class=\"operator\">-</button>\n            <button onclick=\"appendToDisplay('1')\">1</button>\n            <button onclick=\"appendToDisplay('2')\">2</button>\n            <button onclick=\"appendToDisplay('3')\">3</button>\n            <button onclick=\"appendToDisplay('*')\" class=\"operator\">*</button>\n            <button onclick=\"appendToDisplay('0')\">0</button>\n            <button onclick=\"appendToDisplay('.')\">.</button>\n            <button onclick=\"calculate()\" class=\"operator\">=</button>\n            <button onclick=\"appendToDisplay('/')\" class=\"operator\">/</button>\n            <button onclick=\"clearDisplay()\" class=\"clear\">C</button>\n        </div>\n    </div>\n    <script>\n        function appendToDisplay(value) {\n            document.getElementById('display').value += value;\n        }\n        function clearDisplay() {\n            document.getElementById('display').value = '';\n        }\n        async function calculate() {\n            const expression = document.getElementById('display').value;\n            try {\n                const response = await fetch('http://localhost:8000/calculate', {\n                    method: 'POST',\n                    headers: { 'Content-Type': 'application/json' },\n                    body: JSON.stringify({ expression: expression })\n                });\n                const data = await response.json();\n                if (data.error) {\n                    document.getElementById('display').value = 'Error';\n                } else {\n                    document.getElementById('display').value = data.result;\n                }\n            } catch (error) {\n                document.getElementById('display').value = 'Error';\n            }\n        }\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

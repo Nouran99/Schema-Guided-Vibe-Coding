@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        button { margin: 5px; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .section { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        #result { margin-top: 20px; padding: 10px; background: #f8f9fa; }
+        input { margin: 5px; padding: 8px; width: 200px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>E-Learning Platform</h1>
+    
+    <div class="section">
+        <h2>Courses</h2>
+        <button onclick="listCourses()">List Courses</button>
+        <button onclick="createCourse()">Create Course</button>
+        <div id="courses"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Lessons</h2>
+        <input id="courseId" placeholder="Course ID" type="number">
+        <button onclick="addLesson()">Add Lesson</button>
+        <input id="lessonId" placeholder="Lesson ID" type="number">
+        <button onclick="markLessonComplete()">Mark Complete</button>
+    </div>
+    
+    <div class="section">
+        <h2>Quizzes</h2>
+        <button onclick="createQuiz()">Create Quiz</button>
+        <input id="quizId" placeholder="Quiz ID" type="number">
+        <button onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+    
+    <div class="section">
+        <h2>Learner</h2>
+        <button onclick="enrollCourse()">Enroll</button>
+        <button onclick="getDashboard()">Dashboard</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        const learnerId = 1;
+        
+        function listCourses() {
+            fetch(`${API_BASE}/courses`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('courses').innerHTML = data.map(c => 
+                        `<div><h3>${c.title}</h3><p>${c.description}</p></div>`
+                    ).join('');
+                    showResult('Courses loaded');
+                })
+                .catch(err => showError(err));
+        }
+        
+        function createCourse() {
+            const title = prompt('Course title:');
+            const desc = prompt('Description:');
+            if (!title || !desc) return showError('Missing fields');
+            fetch(`${API_BASE}/courses`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description: desc, instructor_id: 1 })
+            })
+            .then(res => res.json())
+            .then(data => showResult('Course created: ' + data.id))
+            .catch(err => showError(err));
+        }
+        
+        function addLesson() {
+            const courseId = document.getElementById('courseId').value;
+            const title = prompt('Lesson title:');
+            if (!courseId || !title) return showError('Missing fields');
+            fetch(`${API_BASE}/courses/${courseId}/lessons`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content_type: 'text', content_url: '', order: 1 })
+            })
+            .then(res => res.json())
+            .then(data => showResult('Lesson added: ' + data.id))
+            .catch(err => showError(err));
+        }
+        
+        function markLessonComplete() {
+            const lessonId = document.getElementById('lessonId').value;
+            if (!lessonId) return showError('Enter Lesson ID');
+            fetch(`${API_BASE}/lessons/${lessonId}/complete`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(data => showResult('Lesson marked complete'))
+            .catch(err => showError(err));
+        }
+        
+        function createQuiz() {
+            const lessonId = prompt('Lesson ID for quiz:');
+            if (!lessonId) return showError('Enter Lesson ID');
+            const questions = {
+                multiple_choice: [
+                    { question: 'Sample question', options: ['A', 'B', 'C'], answer: 0 }
+                ]
+            };
+            fetch(`${API_BASE}/lessons/${lessonId}/quiz`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: 'Quiz', questions, passing_score: 70 })
+            })
+            .then(res => res.json())
+            .then(data => showResult('Quiz created: ' + data.id))
+            .catch(err => showError(err));
+        }
+        
+        function submitQuiz() {
+            const quizId = document.getElementById('quizId').value;
+            if (!quizId) return showError('Enter Quiz ID');
+            fetch(`${API_BASE}/quizzes/${quizId}/submit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answers: {} })
+            })
+            .then(res => res.json())
+            .then(data => showResult(`Quiz graded: ${data.score}% (Pass: ${data.passed})`))
+            .catch(err => showError(err));
+        }
+        
+        function enrollCourse() {
+            const courseId = prompt('Course ID to enroll:');
+            if (!courseId) return showError('Enter Course ID');
+            fetch(`${API_BASE}/courses/${courseId}/enroll`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ learner_id: learnerId })
+            })
+            .then(res => res.json())
+            .then(data => showResult('Enrolled: ' + data.id))
+            .catch(err => showError(err));
+        }
+        
+        function getDashboard() {
+            fetch(`${API_BASE}/learners/${learnerId}/dashboard`)
+                .then(res => res.json())
+                .then(data => showResult('Dashboard: ' + JSON.stringify(data)))
+                .catch(err => showError(err));
+        }
+        
+        function showResult(msg) {
+            document.getElementById('result').innerHTML = `<span>${msg}</span>`;
+        }
+        
+        function showError(err) {
+            document.getElementById('result').innerHTML = `<span class="error">Error: ${err}</span>`;
+        }
+    </script>
+</body>
+</html>

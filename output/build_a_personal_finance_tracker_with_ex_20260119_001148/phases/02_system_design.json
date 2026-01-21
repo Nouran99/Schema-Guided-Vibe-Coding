@@ -1,0 +1,66 @@
+{
+  "models": [
+    {
+      "name": "Transaction",
+      "fields": [
+        "id: int",
+        "amount: float",
+        "type: str",
+        "category_id: int",
+        "date: date",
+        "description: str"
+      ]
+    },
+    {
+      "name": "Category",
+      "fields": [
+        "id: int",
+        "name: str",
+        "budget: float"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/transactions",
+      "description": "Get all transactions, filter by date range"
+    },
+    {
+      "method": "POST",
+      "path": "/api/transactions",
+      "description": "Create a new transaction"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/transactions/{id}",
+      "description": "Update a transaction"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/transactions/{id}",
+      "description": "Delete a transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/api/categories",
+      "description": "Get all categories with budgets"
+    },
+    {
+      "method": "POST",
+      "path": "/api/categories",
+      "description": "Create a new category"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/categories/{id}",
+      "description": "Update category budget"
+    },
+    {
+      "method": "GET",
+      "path": "/api/budget-progress",
+      "description": "Get spending vs budget per category"
+    }
+  ],
+  "architecture_notes": "Simple REST API with two core models. Transaction type is 'income' or 'expense'. Budget progress computed by aggregating transactions. Charts and exports can be built from these endpoints."
+}

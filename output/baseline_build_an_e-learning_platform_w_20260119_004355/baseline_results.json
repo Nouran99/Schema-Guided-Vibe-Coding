@@ -1,0 +1,49 @@
+{
+  "success": true,
+  "vibe_prompt": "Build an e-learning platform with courses, lessons, quizzes, progress tracking, and certificates, which sould have minimum features : create and manage courses, organize lessons within courses, video/text content support, create quizzes with multiple question types, auto-grade quizzes, track learner progress per course, mark lessons as complete, generate completion certificates, course enrollment system, dashboard with enrolled courses and progress",
+  "project_dir": "output\\baseline_build_an_e-learning_platform_w_20260119_004355",
+  "output": {
+    "user_stories": [
+      {
+        "id": "US001",
+        "title": "Course Management",
+        "description": "As an admin, I want to create and manage courses with titles, descriptions, and status, so that I can offer structured learning content.",
+        "priority": "high"
+      },
+      {
+        "id": "US002",
+        "title": "Lesson Organization",
+        "description": "As an admin, I want to organize lessons within courses with video or text content, so that learners can follow a logical sequence.",
+        "priority": "high"
+      },
+      {
+        "id": "US003",
+        "title": "Quiz Creation",
+        "description": "As an admin, I want to create quizzes with multiple-choice questions that auto-grade, so that I can assess learner understanding.",
+        "priority": "high"
+      },
+      {
+        "id": "US004",
+        "title": "Course Enrollment",
+        "description": "As a learner, I want to enroll in courses, so that I can access lessons and track my progress.",
+        "priority": "high"
+      },
+      {
+        "id": "US005",
+        "title": "Progress Tracking",
+        "description": "As a learner, I want to mark lessons as complete and see my progress per course on a dashboard, so that I can monitor my learning journey.",
+        "priority": "high"
+      },
+      {
+        "id": "US006",
+        "title": "Certificate Generation",
+        "description": "As a learner, I want to generate a completion certificate when I finish a course, so that I have proof of achievement.",
+        "priority": "medium"
+      }
+    ],
+    "backend_code": "from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nfrom typing import List, Optional\nfrom uuid import uuid4\n\napp = FastAPI()\n\nclass Course(BaseModel):\n    id: str\n    title: str\n    description: str\n    status: str = \"active\"\n\nclass Lesson(BaseModel):\n    id: str\n    course_id: str\n    title: str\n    content_type: str\n    content: str\n    completed: bool = False\n\nclass Quiz(BaseModel):\n    id: str\n    course_id: str\n    question: str\n    options: List[str]\n    answer: int\n\nclass Enrollment(BaseModel):\n    user_id: str\n    course_id: str\n    progress: int = 0\n\ncourses_db = []\nlessons_db = []\nquizzes_db = []\nenrollments_db = []\n\n@app.post(\"/courses/\")\ndef create_course(course: Course):\n    course.id = str(uuid4())\n    courses_db.append(course)\n    return course\n\n@app.get(\"/courses/\")\ndef get_courses():\n    return courses_db\n\n@app.post(\"/lessons/\")\ndef create_lesson(lesson: Lesson):\n    lesson.id = str(uuid4())\n    lessons_db.append(lesson)\n    return lesson\n\n@app.get(\"/lessons/{course_id}\")\ndef get_lessons(course_id: str):\n    return [l for l in lessons_db if l.course_id == course_id]\n\n@app.post(\"/enroll/\")\ndef enroll(enrollment: Enrollment):\n    enrollments_db.append(enrollment)\n    return enrollment\n\n@app.get(\"/progress/{user_id}/{course_id}\")\ndef get_progress(user_id: str, course_id: str):\n    for e in enrollments_db:\n        if e.user_id == user_id and e.course_id == course_id:\n            return {\"progress\": e.progress}\n    raise HTTPException(status_code=404, detail=\"Enrollment not found\")\n\n@app.post(\"/complete_lesson/\")\ndef complete_lesson(user_id: str, course_id: str, lesson_id: str):\n    for e in enrollments_db:\n        if e.user_id == user_id and e.course_id == course_id:\n            e.progress += 10\n            return {\"message\": \"Lesson completed\", \"progress\": e.progress}\n    raise HTTPException(status_code=404, detail=\"Enrollment not found\")\n\n@app.post(\"/certificate/{user_id}/{course_id}\")\ndef generate_certificate(user_id: str, course_id: str):\n    for e in enrollments_db:\n        if e.user_id == user_id and e.course_id == course_id and e.progress >= 100:\n            return {\"certificate\": f\"Certificate of Completion for {course_id} issued to {user_id}\"}\n    raise HTTPException(status_code=400, detail=\"Course not completed\")\n",
+    "frontend_code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>E-Learning Platform</title>\n    <style>\n        body { font-family: Arial, sans-serif; margin: 20px; }\n        .section { margin-bottom: 30px; }\n        input, textarea, button { display: block; margin: 10px 0; padding: 8px; width: 300px; }\n        .course { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }\n    </style>\n</head>\n<body>\n    <h1>E-Learning Platform</h1>\n    <div class=\"section\">\n        <h2>Create Course</h2>\n        <input id=\"courseTitle\" placeholder=\"Course Title\">\n        <textarea id=\"courseDesc\" placeholder=\"Course Description\"></textarea>\n        <button onclick=\"createCourse()\">Create Course</button>\n    </div>\n    <div class=\"section\">\n        <h2>Courses</h2>\n        <div id=\"coursesList\"></div>\n    </div>\n    <div class=\"section\">\n        <h2>Enroll in Course</h2>\n        <input id=\"userId\" placeholder=\"User ID\">\n        <input id=\"enrollCourseId\" placeholder=\"Course ID\">\n        <button onclick=\"enrollCourse()\">Enroll</button>\n    </div>\n    <div class=\"section\">\n        <h2>My Progress</h2>\n        <input id=\"progressUserId\" placeholder=\"User ID\">\n        <input id=\"progressCourseId\" placeholder=\"Course ID\">\n        <button onclick=\"getProgress()\">Check Progress</button>\n        <p id=\"progressDisplay\"></p>\n    </div>\n    <script>\n        const apiUrl = 'http://localhost:8000';\n        async function createCourse() {\n            const title = document.getElementById('courseTitle').value;\n            const desc = document.getElementById('courseDesc').value;\n            const res = await fetch(`${apiUrl}/courses/`, {\n                method: 'POST',\n                headers: {'Content-Type': 'application/json'},\n                body: JSON.stringify({id: '', title, description: desc})\n            });\n            alert('Course created');\n            loadCourses();\n        }\n        async function loadCourses() {\n            const res = await fetch(`${apiUrl}/courses/`);\n            const courses = await res.json();\n            const list = document.getElementById('coursesList');\n            list.innerHTML = courses.map(c => `<div class=\"course\"><h3>${c.title}</h3><p>${c.description}</p><p>ID: ${c.id}</p></div>`).join('');\n        }\n        async function enrollCourse() {\n            const userId = document.getElementById('userId').value;\n            const courseId = document.getElementById('enrollCourseId').value;\n            const res = await fetch(`${apiUrl}/enroll/`, {\n                method: 'POST',\n                headers: {'Content-Type': 'application/json'},\n                body: JSON.stringify({user_id: userId, course_id: courseId})\n            });\n            alert('Enrolled');\n        }\n        async function getProgress() {\n            const userId = document.getElementById('progressUserId').value;\n            const courseId = document.getElementById('progressCourseId').value;\n            const res = await fetch(`${apiUrl}/progress/${userId}/${courseId}`);\n            const data = await res.json();\n            document.getElementById('progressDisplay').innerText = `Progress: ${data.progress}%`;\n        }\n        loadCourses();\n    </script>\n</body>\n</html>",
+    "test_summary": "pass"
+  },
+  "error": null
+}

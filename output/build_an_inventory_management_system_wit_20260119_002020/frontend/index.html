@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .section { margin-bottom: 20px; }
+        input, button, select, textarea { margin: 5px; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .low-stock { background-color: #ffcccc; }
+        .error { color: red; font-size: 12px; }
+        .filter-row { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Inventory Manager</h1>
+    <div class="section">
+        <h2>Products</h2>
+        <input id="productName" placeholder="Product Name" required>
+        <textarea id="productDescription" placeholder="Description" rows="2"></textarea>
+        <input id="productPrice" placeholder="Price" type="number" min="0" step="0.01" required>
+        <input id="productThreshold" placeholder="Low Stock Threshold" type="number" min="0" required>
+        <select id="productSupplier"><option value="">Select Supplier</option></select>
+        <button onclick="addProduct()">Add Product</button>
+        <button onclick="loadProducts()">Load Products</button>
+        <div class="filter-row">
+            <input id="searchName" placeholder="Search by name" oninput="searchProducts()">
+            <select id="filterSupplier" onchange="searchProducts()"><option value="">All Suppliers</option></select>
+            <select id="filterStock" onchange="searchProducts()">
+                <option value="">All Stock</option>
+                <option value="low">Low Stock Only</option>
+            </select>
+        </div>
+        <div id="productError" class="error"></div>
+        <table id="productsTable">
+            <thead><tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th>Threshold</th><th>Supplier</th><th>Current Stock</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="section">
+        <h2>Suppliers</h2>
+        <input id="supplierName" placeholder="Supplier Name" required>
+        <input id="supplierContact" placeholder="Contact Info" required>
+        <button onclick="addSupplier()">Add Supplier</button>
+        <button onclick="loadSuppliers()">Load Suppliers</button>
+        <table id="suppliersTable">
+            <thead><tr><th>ID</th><th>Name</th><th>Contact</th></tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="section">
+        <h2>Stock Movement</h2>
+        <input id="movementProductId" placeholder="Product ID" type="number" min="1" required>
+        <input id="movementQuantity" placeholder="Quantity" type="number" required>
+        <input id="movementSupplierId" placeholder="Supplier ID" type="number" min="1">
+        <select id="movementType">
+            <option value="purchase">Purchase</option>
+            <option value="sale">Sale</option>
+        </select>
+        <button onclick="addStockMovement()">Record Movement</button>
+        <button onclick="loadMovements()">View History</button>
+        <table id="movementsTable">
+            <thead><tr><th>ID</th><th>Product</th><th>Type</th><th>Quantity</th><th>Supplier</th><th>Date</th></tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="section">
+        <h2>Inventory Valuation</h2>
+        <button onclick="getValuation()">Get Valuation Report</button>
+        <div id="valuationResult"></div>
+    </div>
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        let suppliers = [];
+        async function fetchAPI(endpoint, options = {}) {
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`, {
+                    headers: { 'Content-Type': 'application/json' },
+                    ...options
+                });
+                return await res.json();
+            } catch (err) {
+                console.error('API Error:', err);
+                alert('API call failed');
+            }
+        }
+        async function loadSuppliers() {
+            suppliers = await fetchAPI('/suppliers');
+            const select = document.getElementById('productSupplier');
+            const filterSelect = document.getElementById('filterSupplier');
+            select.innerHTML = '<option value="">Select Supplier</option>' + suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            filterSelect.innerHTML = '<option value="">All Suppliers</option>' + suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            const tbody = document.querySelector('#suppliersTable tbody');
+            tbody.innerHTML = suppliers.map(s => `<tr><td>${s.id}</td><td>${s.name}</td><td>${s.contact_info}</td></tr>`).join('');
+        }
+        async function loadProducts() {
+            const products = await fetchAPI('/products');
+            renderProducts(products);
+        }
+        async function searchProducts() {
+            const name = document.getElementById('searchName').value;
+            const supplierId = document.getElementById('filterSupplier').value;
+            const stockFilter = document.getElementById('filterStock').value;
+            let url = '/products?'; 
+            if (name) url += `name=${name}&`;
+            if (supplierId) url += `supplier_id=${supplierId}&`;
+            if (stockFilter === 'low') url += 'low_stock=true&';
+            const products = await fetchAPI(url);
+            renderProducts(products);
+        }
+        function renderProducts(products) {
+            const tbody = document.querySelector('#productsTable tbody');
+            tbody.innerHTML = products.map(p => {
+                const supplier = suppliers.find(s => s.id === p.primary_supplier_id);
+                const isLow = p.current_stock <= p.low_stock_threshold;
+                return `<tr class="${isLow ? 'low-stock' : ''}"><td>${p.id}</td><td>${p.name}</td><td>${p.description || ''}</td><td>${p.unit_price}</td><td>${p.low_stock_threshold}</td><td>${supplier ? supplier.name : 'None'}</td><td>${p.current_stock}</td><td>${isLow ? 'LOW STOCK!' : 'OK'}</td><td><button onclick="editProduct(${p.id})">Edit</button> <button onclick="deleteProduct(${p.id})">Delete</button></td></tr>`;
+            }).join('');
+        }
+        async function addProduct() {
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const threshold = parseInt(document.getElementById('productThreshold').value);
+            const supplierId = parseInt(document.getElementById('productSupplier').value) || null;
+            if (!name || price < 0 || threshold < 0) {
+                document.getElementById('productError').textContent = 'Please fill all required fields correctly.';
+                return;
+            }
+            await fetchAPI('/products', {
+                method: 'POST',
+                body: JSON.stringify({ name, description, unit_price: price, low_stock_threshold: threshold, primary_supplier_id: supplierId })
+            });
+            document.getElementById('productError').textContent = '';
+            loadProducts();
+        }
+        async function editProduct(id) {
+            const newName = prompt('Enter new product name:');
+            if (newName) {
+                await fetchAPI(`/products/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ name: newName })
+                });
+                loadProducts();
+            }
+        }
+        async function deleteProduct(id) {
+            await fetchAPI(`/products/${id}`, { method: 'DELETE' });
+            loadProducts();
+        }
+        async function addSupplier() {
+            const name = document.getElementById('supplierName').value;
+            const contact = document.getElementById('supplierContact').value;
+            if (!name || !contact) return alert('Please fill all fields');
+            await fetchAPI('/suppliers', {
+                method: 'POST',
+                body: JSON.stringify({ name, contact_info: contact })
+            });
+            loadSuppliers();
+        }
+        async function addStockMovement() {
+            const productId = parseInt(document.getElementById('movementProductId').value);
+            const quantity = parseInt(document.getElementById('movementQuantity').value);
+            const supplierId = parseInt(document.getElementById('movementSupplierId').value) || null;
+            const type = document.getElementById('movementType').value;
+            if (!productId || !quantity || quantity <= 0) return alert('Please fill required fields with positive quantity');
+            await fetchAPI('/stock_movements', {
+                method: 'POST',
+                body: JSON.stringify({ product_id: productId, quantity, movement_type: type, supplier_id: supplierId })
+            });
+            alert('Movement recorded');
+            loadProducts();
+        }
+        async function loadMovements() {
+            const data = await fetchAPI('/stock_movements');
+            const tbody = document.querySelector('#movementsTable tbody');
+            tbody.innerHTML = data.map(m => `<tr><td>${m.id}</td><td>${m.product_id}</td><td>${m.movement_type}</td><td>${m.quantity}</td><td>${m.supplier_id || 'None'}</td><td>${new Date(m.created_at).toLocaleDateString()}</td></tr>`).join('');
+        }
+        async function getValuation() {
+            const data = await fetchAPI('/inventory_valuation');
+            document.getElementById('valuationResult').innerHTML = `<p><strong>Total Inventory Value:</strong> $${data.total_value || '0.00'}</p>`;
+        }
+        loadSuppliers();
+        loadProducts();
+    </script>
+</body>
+</html>

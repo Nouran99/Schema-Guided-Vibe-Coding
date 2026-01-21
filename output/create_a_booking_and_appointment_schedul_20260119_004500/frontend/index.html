@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking System</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .section { margin-bottom: 20px; }
+        select, input, button { padding: 8px; margin: 5px; }
+        #message { margin-top: 10px; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Appointment Booking</h1>
+    <div class="section">
+        <h3>1. Choose Service</h3>
+        <select id="serviceSelect"><option>Loading...</option></select>
+    </div>
+    <div class="section">
+        <h3>2. View Available Slots</h3>
+        <button onclick="loadAvailability()">Load Slots</button>
+        <div id="slots"></div>
+    </div>
+    <div class="section">
+        <h3>3. Book Appointment</h3>
+        <input id="customerName" placeholder="Your Name">
+        <input id="customerEmail" placeholder="Email">
+        <button onclick="bookAppointment()">Book Selected Slot</button>
+    </div>
+    <div id="message"></div>
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let selectedSlotId = null;
+        async function loadServices() {
+            try {
+                const res = await fetch(`${API_BASE}/api/services`);
+                const services = await res.json();
+                const select = document.getElementById('serviceSelect');
+                select.innerHTML = services.map(s => `<option value="${s.id}">${s.name} (${s.duration_minutes} min)</option>`).join('');
+            } catch (e) { showMessage('Failed to load services', 'error'); }
+        }
+        async function loadAvailability() {
+            const serviceId = document.getElementById('serviceSelect').value;
+            if (!serviceId) return showMessage('Select a service first', 'error');
+            try {
+                const res = await fetch(`${API_BASE}/api/availability?service_id=${serviceId}`);
+                const slots = await res.json();
+                const slotsDiv = document.getElementById('slots');
+                slotsDiv.innerHTML = slots.map(s => `<div><button onclick="selectSlot(${s.id})">${new Date(s.start_time).toLocaleString()}</button></div>`).join('');
+            } catch (e) { showMessage('Failed to load slots', 'error'); }
+        }
+        function selectSlot(slotId) {
+            selectedSlotId = slotId;
+            showMessage('Slot selected', 'success');
+        }
+        async function bookAppointment() {
+            const name = document.getElementById('customerName').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            const serviceId = document.getElementById('serviceSelect').value;
+            if (!name || !email || !serviceId || !selectedSlotId) {
+                return showMessage('Fill all fields and select a slot', 'error');
+            }
+            try {
+                const customerRes = await fetch(`${API_BASE}/api/customers`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone: '' })
+                });
+                const customer = await customerRes.json();
+                const appointmentRes = await fetch(`${API_BASE}/api/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customer_id: customer.id, service_id: serviceId, slot_id: selectedSlotId })
+                });
+                if (appointmentRes.ok) {
+                    const appointment = await appointmentRes.json();
+                    showMessage(`Appointment booked! Confirmation #${appointment.id}`, 'success');
+                } else { throw new Error('Booking failed'); }
+            } catch (e) { showMessage('Booking failed', 'error'); }
+        }
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = type;
+        }
+        loadServices();
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Define Services",
+      "description": "As an admin, I want to define service types and durations so that customers can book specific appointments.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Set Availability",
+      "description": "As an admin, I want to set available time slots so that bookings are only allowed during open hours.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Customer Booking",
+      "description": "As a customer, I want to book an appointment via an interface so that I can secure a time slot.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Prevent Double-Booking",
+      "description": "As the system, I want to prevent double-booking so that time slots are uniquely allocated.",
+      "priority": "high"
+    },
+    {
+      "id": "US005",
+      "title": "Calendar View",
+      "description": "As an admin, I want a calendar view of appointments so that I can see daily/weekly schedules.",
+      "priority": "medium"
+    },
+    {
+      "id": "US006",
+      "title": "Customer Database",
+      "description": "As an admin, I want a customer database with history so that I can manage client relationships.",
+      "priority": "medium"
+    },
+    {
+      "id": "US007",
+      "title": "Send Reminders",
+      "description": "As the system, I want to send email/notification reminders so that customers don't miss appointments.",
+      "priority": "medium"
+    },
+    {
+      "id": "US008",
+      "title": "Reschedule/Cancel",
+      "description": "As a customer, I want to reschedule or cancel appointments so that I can manage my bookings.",
+      "priority": "medium"
+    },
+    {
+      "id": "US009",
+      "title": "Booking Confirmation",
+      "description": "As a customer, I want a booking confirmation so that I receive proof of my appointment.",
+      "priority": "low"
+    }
+  ],
+  "summary": "A booking and appointment scheduling system enabling service definition, availability management, customer bookings with double-booking prevention, calendar views, customer database, reminders, and booking modifications."
+}

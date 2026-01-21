@@ -1,0 +1,248 @@
+{
+  "success": true,
+  "vibe_prompt": "Build a simple calculator, which sould have minimum features : basic arithmetic operations (add, subtract, multiply, divide), number input, display result, clear function",
+  "project_dir": "output\\build_a_simple_calculator__which_sould_h_20260118_235745",
+  "phases": {
+    "user_stories": {
+      "success": true,
+      "data": {
+        "stories": [
+          {
+            "id": "US001",
+            "title": "Number Input",
+            "description": "As a user, I want to input numbers so that I can perform calculations",
+            "priority": "high"
+          },
+          {
+            "id": "US002",
+            "title": "Addition Operation",
+            "description": "As a user, I want to add two numbers so that I can get their sum",
+            "priority": "high"
+          },
+          {
+            "id": "US003",
+            "title": "Subtraction Operation",
+            "description": "As a user, I want to subtract one number from another so that I can get the difference",
+            "priority": "high"
+          },
+          {
+            "id": "US004",
+            "title": "Multiplication Operation",
+            "description": "As a user, I want to multiply two numbers so that I can get their product",
+            "priority": "high"
+          },
+          {
+            "id": "US005",
+            "title": "Division Operation",
+            "description": "As a user, I want to divide one number by another so that I can get the quotient",
+            "priority": "high"
+          },
+          {
+            "id": "US006",
+            "title": "Result Display",
+            "description": "As a user, I want to see the calculation result so that I know the answer",
+            "priority": "high"
+          },
+          {
+            "id": "US007",
+            "title": "Clear Function",
+            "description": "As a user, I want to clear the input and result so that I can start a new calculation",
+            "priority": "high"
+          },
+          {
+            "id": "US008",
+            "title": "Decimal Input",
+            "description": "As a user, I want to input decimal numbers so that I can perform precise calculations",
+            "priority": "medium"
+          },
+          {
+            "id": "US009",
+            "title": "Error Handling for Division by Zero",
+            "description": "As a user, I want to see an error message when dividing by zero so that I avoid incorrect results",
+            "priority": "medium"
+          }
+        ],
+        "summary": "Build a simple calculator with basic arithmetic operations (add, subtract, multiply, divide), number input, result display, and clear function to enable users to perform everyday calculations efficiently."
+      },
+      "raw": "{\n    \"stories\": [\n        {\n            \"id\": \"US001\",\n            \"title\": \"Number Input\",\n            \"description\": \"As a user, I want to input numbers so that I can perform calculations\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US002\",\n            \"title\": \"Addition Operation\",\n            \"description\": \"As a user, I want to add two numbers so that I can get their sum\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US003\",\n            \"title\": \"Subtraction Operation\",\n            \"description\": \"As a user, I want to subtract one number from another so that I can get the difference\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US004\",\n            \"title\": \"Multiplication Operation\",\n            \"description\": \"As a user, I want to multiply two numbers so that I can get their product\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US005\",\n            \"title\": \"Division Operation\",\n            \"description\": \"As a user, I want to divide one number by another so that I can get the quotient\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US006\",\n            \"title\": \"Result Display\",\n            \"description\": \"As a user, I want to see the calculation result so that I know the answer\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US007\",\n            \"title\": \"Clear Function\",\n            \"description\": \"As a user, I want to clear the input and result so that I can start a new calculation\",\n            \"priority\": \"high\"\n        },\n        {\n            \"id\": \"US008\",\n            \"title\": \"Decimal Input\",\n            \"description\": \"As a user, I want to input decimal numbers so that I can perform precise calculations\",\n            \"priority\": \"medium\"\n        },\n        {\n            \"id\": \"US009\",\n            \"title\": \"Error Handling for Division by Zero\",\n            \"description\": \"As a user, I want to see an error message when dividing by zero so that I avoid incorrect results\",\n            \"priority\": \"medium\"\n        }\n    ],\n    \"summary\": \"Build a simple calculator with basic arithmetic operations (add, subtract, multiply, divide), number input, result display, and clear function to enable users to perform everyday calculations efficiently.\"\n}",
+      "error": null
+    },
+    "system_design": {
+      "success": true,
+      "data": {
+        "models": [
+          {
+            "name": "Calculation",
+            "fields": [
+              "id: int",
+              "operand1: float",
+              "operand2: float",
+              "operation: str",
+              "result: float",
+              "created_at: datetime"
+            ]
+          }
+        ],
+        "endpoints": [
+          {
+            "method": "POST",
+            "path": "/api/calculate",
+            "description": "Perform arithmetic calculation"
+          },
+          {
+            "method": "GET",
+            "path": "/api/calculations",
+            "description": "Get calculation history"
+          },
+          {
+            "method": "GET",
+            "path": "/api/calculations/{id}",
+            "description": "Get specific calculation"
+          },
+          {
+            "method": "DELETE",
+            "path": "/api/calculations/{id}",
+            "description": "Delete calculation record"
+          },
+          {
+            "method": "DELETE",
+            "path": "/api/calculations",
+            "description": "Clear all calculations"
+          }
+        ],
+        "architecture_notes": "Simple REST API for calculator. Single Calculation model stores operands, operation, result, timestamp. POST /calculate handles all operations (add, subtract, multiply, divide) with validation for division by zero. GET endpoints provide history. DELETE endpoints support clear functionality. Frontend handles input, display, and error messages."
+      },
+      "raw": "{\n    \"models\": [\n        {\n            \"name\": \"Calculation\",\n            \"fields\": [\"id: int\", \"operand1: float\", \"operand2: float\", \"operation: str\", \"result: float\", \"created_at: datetime\"]\n        }\n    ],\n    \"endpoints\": [\n        {\n            \"method\": \"POST\",\n            \"path\": \"/api/calculate\",\n            \"description\": \"Perform arithmetic calculation\"\n        },\n        {\n            \"method\": \"GET\",\n            \"path\": \"/api/calculations\",\n            \"description\": \"Get calculation history\"\n        },\n        {\n            \"method\": \"GET\",\n            \"path\": \"/api/calculations/{id}\",\n            \"description\": \"Get specific calculation\"\n        },\n        {\n            \"method\": \"DELETE\",\n            \"path\": \"/api/calculations/{id}\",\n            \"description\": \"Delete calculation record\"\n        },\n        {\n            \"method\": \"DELETE\",\n            \"path\": \"/api/calculations\",\n            \"description\": \"Clear all calculations\"\n        }\n    ],\n    \"architecture_notes\": \"Simple REST API for calculator. Single Calculation model stores operands, operation, result, timestamp. POST /calculate handles all operations (add, subtract, multiply, divide) with validation for division by zero. GET endpoints provide history. DELETE endpoints support clear functionality. Frontend handles input, display, and error messages.\"\n}",
+      "error": null
+    },
+    "backend_code": {
+      "success": true,
+      "data": {
+        "files": [
+          {
+            "filename": "main.py",
+            "content": "from fastapi import FastAPI, HTTPException\nfrom fastapi.middleware.cors import CORSMiddleware\nfrom pydantic import BaseModel\nfrom datetime import datetime\nfrom typing import List, Optional\nimport uuid\n\napp = FastAPI()\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\ncalculations = {}\n\nclass CalculationRequest(BaseModel):\n    operand1: float\n    operand2: float\n    operation: str\n\nclass CalculationResponse(BaseModel):\n    id: str\n    operand1: float\n    operand2: float\n    operation: str\n    result: float\n    created_at: datetime\n\n@app.post(\"/api/calculate\", response_model=CalculationResponse)\ndef calculate(request: CalculationRequest):\n    if request.operation == \"add\":\n        result = request.operand1 + request.operand2\n    elif request.operation == \"subtract\":\n        result = request.operand1 - request.operand2\n    elif request.operation == \"multiply\":\n        result = request.operand1 * request.operand2\n    elif request.operation == \"divide\":\n        if request.operand2 == 0:\n            raise HTTPException(status_code=400, detail=\"Division by zero\")\n        result = request.operand1 / request.operand2\n    else:\n        raise HTTPException(status_code=400, detail=\"Invalid operation\")\n    \n    calc_id = str(uuid.uuid4())\n    calc = CalculationResponse(\n        id=calc_id,\n        operand1=request.operand1,\n        operand2=request.operand2,\n        operation=request.operation,\n        result=result,\n        created_at=datetime.now()\n    )\n    calculations[calc_id] = calc\n    return calc\n\n@app.get(\"/api/calculations\", response_model=List[CalculationResponse])\ndef get_calculations():\n    return list(calculations.values())\n\n@app.get(\"/api/calculations/{id}\", response_model=CalculationResponse)\ndef get_calculation(id: str):\n    if id not in calculations:\n        raise HTTPException(status_code=404, detail=\"Calculation not found\")\n    return calculations[id]\n\n@app.delete(\"/api/calculations/{id}\")\ndef delete_calculation(id: str):\n    if id not in calculations:\n        raise HTTPException(status_code=404, detail=\"Calculation not found\")\n    del calculations[id]\n    return {\"message\": \"Calculation deleted\"}\n\n@app.delete(\"/api/calculations\")\ndef clear_calculations():\n    calculations.clear()\n    return {\"message\": \"All calculations cleared\"}\n",
+            "description": "Main FastAPI app with calculator endpoints"
+          }
+        ],
+        "setup_instructions": "pip install fastapi uvicorn && uvicorn main:app --reload"
+      },
+      "raw": "{\n    \"files\": [\n        {\n            \"filename\": \"main.py\",\n            \"content\": \"from fastapi import FastAPI, HTTPException\\nfrom fastapi.middleware.cors import CORSMiddleware\\nfrom pydantic import BaseModel\\nfrom datetime import datetime\\nfrom typing import List, Optional\\nimport uuid\\n\\napp = FastAPI()\\n\\napp.add_middleware(\\n    CORSMiddleware,\\n    allow_origins=[\\\"*\\\"],\\n    allow_credentials=True,\\n    allow_methods=[\\\"*\\\"],\\n    allow_headers=[\\\"*\\\"],\\n)\\n\\ncalculations = {}\\n\\nclass CalculationRequest(BaseModel):\\n    operand1: float\\n    operand2: float\\n    operation: str\\n\\nclass CalculationResponse(BaseModel):\\n    id: str\\n    operand1: float\\n    operand2: float\\n    operation: str\\n    result: float\\n    created_at: datetime\\n\\n@app.post(\\\"/api/calculate\\\", response_model=CalculationResponse)\\ndef calculate(request: CalculationRequest):\\n    if request.operation == \\\"add\\\":\\n        result = request.operand1 + request.operand2\\n    elif request.operation == \\\"subtract\\\":\\n        result = request.operand1 - request.operand2\\n    elif request.operation == \\\"multiply\\\":\\n        result = request.operand1 * request.operand2\\n    elif request.operation == \\\"divide\\\":\\n        if request.operand2 == 0:\\n            raise HTTPException(status_code=400, detail=\\\"Division by zero\\\")\\n        result = request.operand1 / request.operand2\\n    else:\\n        raise HTTPException(status_code=400, detail=\\\"Invalid operation\\\")\\n    \\n    calc_id = str(uuid.uuid4())\\n    calc = CalculationResponse(\\n        id=calc_id,\\n        operand1=request.operand1,\\n        operand2=request.operand2,\\n        operation=request.operation,\\n        result=result,\\n        created_at=datetime.now()\\n    )\\n    calculations[calc_id] = calc\\n    return calc\\n\\n@app.get(\\\"/api/calculations\\\", response_model=List[CalculationResponse])\\ndef get_calculations():\\n    return list(calculations.values())\\n\\n@app.get(\\\"/api/calculations/{id}\\\", response_model=CalculationResponse)\\ndef get_calculation(id: str):\\n    if id not in calculations:\\n        raise HTTPException(status_code=404, detail=\\\"Calculation not found\\\")\\n    return calculations[id]\\n\\n@app.delete(\\\"/api/calculations/{id}\\\")\\ndef delete_calculation(id: str):\\n    if id not in calculations:\\n        raise HTTPException(status_code=404, detail=\\\"Calculation not found\\\")\\n    del calculations[id]\\n    return {\\\"message\\\": \\\"Calculation deleted\\\"}\\n\\n@app.delete(\\\"/api/calculations\\\")\\ndef clear_calculations():\\n    calculations.clear()\\n    return {\\\"message\\\": \\\"All calculations cleared\\\"}\\n\",\n            \"description\": \"Main FastAPI app with calculator endpoints\"\n        }\n    ],\n    \"setup_instructions\": \"pip install fastapi uvicorn && uvicorn main:app --reload\"\n}",
+      "error": null
+    },
+    "frontend_code": {
+      "success": true,
+      "data": {
+        "files": [
+          {
+            "filename": "index.html",
+            "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Simple Calculator</title>\n    <style>\n        body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; background: #f5f5f5; }\n        .calculator { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }\n        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }\n        button { background: #007bff; color: white; border: none; cursor: pointer; }\n        button:hover { background: #0056b3; }\n        .result { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; font-weight: bold; }\n        .error { color: #dc3545; }\n        .clear { background: #6c757d; }\n        .clear:hover { background: #545b62; }\n    </style>\n</head>\n<body>\n    <div class=\"calculator\">\n        <h2>Simple Calculator</h2>\n        <input type=\"number\" id=\"num1\" placeholder=\"Enter first number\" step=\"any\">\n        <input type=\"number\" id=\"num2\" placeholder=\"Enter second number\" step=\"any\">\n        <select id=\"operation\">\n            <option value=\"add\">Addition (+)</option>\n            <option value=\"subtract\">Subtraction (-)</option>\n            <option value=\"multiply\">Multiplication (*)</option>\n            <option value=\"divide\">Division (/)</option>\n        </select>\n        <button onclick=\"calculate()\">Calculate</button>\n        <button class=\"clear\" onclick=\"clearAll()\">Clear</button>\n        <div id=\"result\" class=\"result\">Result will appear here</div>\n    </div>\n    <script>\n        async function calculate() {\n            const num1 = document.getElementById('num1').value;\n            const num2 = document.getElementById('num2').value;\n            const operation = document.getElementById('operation').value;\n            const resultDiv = document.getElementById('result');\n            \n            if (num1 === '' || num2 === '') {\n                resultDiv.innerHTML = '<span class=\"error\">Please enter both numbers</span>';\n                return;\n            }\n            \n            try {\n                const response = await fetch('http://localhost:8000/api/calculate', {\n                    method: 'POST',\n                    headers: { 'Content-Type': 'application/json' },\n                    body: JSON.stringify({\n                        operand1: parseFloat(num1),\n                        operand2: parseFloat(num2),\n                        operation: operation\n                    })\n                });\n                const data = await response.json();\n                if (response.ok) {\n                    resultDiv.textContent = `Result: ${data.result}`;\n                } else {\n                    resultDiv.innerHTML = `<span class=\"error\">Error: ${data.detail || 'Calculation failed'}</span>`;\n                }\n            } catch (error) {\n                resultDiv.innerHTML = '<span class=\"error\">Network error. Ensure backend is running.</span>';\n            }\n        }\n        \n        function clearAll() {\n            document.getElementById('num1').value = '';\n            document.getElementById('num2').value = '';\n            document.getElementById('result').textContent = 'Result will appear here';\n        }\n    </script>\n</body>\n</html>",
+            "description": "Main HTML page with calculator UI, inline CSS/JS, supports basic operations, error handling, and clear function"
+          }
+        ],
+        "setup_instructions": "Open index.html in browser (ensure backend is running at http://localhost:8000 for API calls)"
+      },
+      "raw": "{\n    \"files\": [\n        {\n            \"filename\": \"index.html\",\n            \"content\": \"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n    <meta charset=\\\"UTF-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\n    <title>Simple Calculator</title>\\n    <style>\\n        body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; background: #f5f5f5; }\\n        .calculator { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }\\n        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }\\n        button { background: #007bff; color: white; border: none; cursor: pointer; }\\n        button:hover { background: #0056b3; }\\n        .result { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; font-weight: bold; }\\n        .error { color: #dc3545; }\\n        .clear { background: #6c757d; }\\n        .clear:hover { background: #545b62; }\\n    </style>\\n</head>\\n<body>\\n    <div class=\\\"calculator\\\">\\n        <h2>Simple Calculator</h2>\\n        <input type=\\\"number\\\" id=\\\"num1\\\" placeholder=\\\"Enter first number\\\" step=\\\"any\\\">\\n        <input type=\\\"number\\\" id=\\\"num2\\\" placeholder=\\\"Enter second number\\\" step=\\\"any\\\">\\n        <select id=\\\"operation\\\">\\n            <option value=\\\"add\\\">Addition (+)</option>\\n            <option value=\\\"subtract\\\">Subtraction (-)</option>\\n            <option value=\\\"multiply\\\">Multiplication (*)</option>\\n            <option value=\\\"divide\\\">Division (/)</option>\\n        </select>\\n        <button onclick=\\\"calculate()\\\">Calculate</button>\\n        <button class=\\\"clear\\\" onclick=\\\"clearAll()\\\">Clear</button>\\n        <div id=\\\"result\\\" class=\\\"result\\\">Result will appear here</div>\\n    </div>\\n    <script>\\n        async function calculate() {\\n            const num1 = document.getElementById('num1').value;\\n            const num2 = document.getElementById('num2').value;\\n            const operation = document.getElementById('operation').value;\\n            const resultDiv = document.getElementById('result');\\n            \\n            if (num1 === '' || num2 === '') {\\n                resultDiv.innerHTML = '<span class=\\\"error\\\">Please enter both numbers</span>';\\n                return;\\n            }\\n            \\n            try {\\n                const response = await fetch('http://localhost:8000/api/calculate', {\\n                    method: 'POST',\\n                    headers: { 'Content-Type': 'application/json' },\\n                    body: JSON.stringify({\\n                        operand1: parseFloat(num1),\\n                        operand2: parseFloat(num2),\\n                        operation: operation\\n                    })\\n                });\\n                const data = await response.json();\\n                if (response.ok) {\\n                    resultDiv.textContent = `Result: ${data.result}`;\\n                } else {\\n                    resultDiv.innerHTML = `<span class=\\\"error\\\">Error: ${data.detail || 'Calculation failed'}</span>`;\\n                }\\n            } catch (error) {\\n                resultDiv.innerHTML = '<span class=\\\"error\\\">Network error. Ensure backend is running.</span>';\\n            }\\n        }\\n        \\n        function clearAll() {\\n            document.getElementById('num1').value = '';\\n            document.getElementById('num2').value = '';\\n            document.getElementById('result').textContent = 'Result will appear here';\\n        }\\n    </script>\\n</body>\\n</html>\",\n            \"description\": \"Main HTML page with calculator UI, inline CSS/JS, supports basic operations, error handling, and clear function\"\n        }\n    ],\n    \"setup_instructions\": \"Open index.html in browser (ensure backend is running at http://localhost:8000 for API calls)\"\n}",
+      "error": null
+    },
+    "test_report": {
+      "success": true,
+      "data": {
+        "overall_status": "pass",
+        "test_cases": [
+          {
+            "id": "TC001",
+            "description": "Basic arithmetic operations work",
+            "status": "pass",
+            "notes": "Addition, subtraction, multiplication, and division (non-zero) function correctly via API and UI.",
+            "responsible_agent": ""
+          },
+          {
+            "id": "TC002",
+            "description": "Division by zero error handling",
+            "status": "pass",
+            "notes": "Backend returns 400 error with message; frontend displays error appropriately.",
+            "responsible_agent": ""
+          },
+          {
+            "id": "TC003",
+            "description": "Decimal number input support",
+            "status": "pass",
+            "notes": "Input fields accept decimals via step='any'; backend processes floats correctly.",
+            "responsible_agent": ""
+          },
+          {
+            "id": "TC004",
+            "description": "Clear function resets UI",
+            "status": "pass",
+            "notes": "Clear button empties input fields and resets result display as required.",
+            "responsible_agent": ""
+          },
+          {
+            "id": "TC005",
+            "description": "Result display updates correctly",
+            "status": "pass",
+            "notes": "UI shows calculation results or error messages dynamically after operations.",
+            "responsible_agent": ""
+          }
+        ],
+        "summary": "All high and medium priority user stories are satisfied. Implementation is functional and meets core requirements.",
+        "recommendations": [
+          "Add input validation for non-numeric characters in frontend.",
+          "Consider persisting calculations to a database instead of memory for production.",
+          "Improve UI with a history panel showing past calculations using the GET endpoints."
+        ],
+        "issues_by_agent": {
+          "product_owner": [],
+          "architect": [],
+          "backend_engineer": [],
+          "frontend_engineer": []
+        }
+      },
+      "raw": "{\n    \"overall_status\": \"pass\",\n    \"test_cases\": [\n        {\n            \"id\": \"TC001\",\n            \"description\": \"Basic arithmetic operations work\",\n            \"status\": \"pass\",\n            \"notes\": \"Addition, subtraction, multiplication, and division (non-zero) function correctly via API and UI.\",\n            \"responsible_agent\": \"\"\n        },\n        {\n            \"id\": \"TC002\",\n            \"description\": \"Division by zero error handling\",\n            \"status\": \"pass\",\n            \"notes\": \"Backend returns 400 error with message; frontend displays error appropriately.\",\n            \"responsible_agent\": \"\"\n        },\n        {\n            \"id\": \"TC003\",\n            \"description\": \"Decimal number input support\",\n            \"status\": \"pass\",\n            \"notes\": \"Input fields accept decimals via step='any'; backend processes floats correctly.\",\n            \"responsible_agent\": \"\"\n        },\n        {\n            \"id\": \"TC004\",\n            \"description\": \"Clear function resets UI\",\n            \"status\": \"pass\",\n            \"notes\": \"Clear button empties input fields and resets result display as required.\",\n            \"responsible_agent\": \"\"\n        },\n        {\n            \"id\": \"TC005\",\n            \"description\": \"Result display updates correctly\",\n            \"status\": \"pass\",\n            \"notes\": \"UI shows calculation results or error messages dynamically after operations.\",\n            \"responsible_agent\": \"\"\n        }\n    ],\n    \"summary\": \"All high and medium priority user stories are satisfied. Implementation is functional and meets core requirements.\",\n    \"recommendations\": [\n        \"Add input validation for non-numeric characters in frontend.\",\n        \"Consider persisting calculations to a database instead of memory for production.\",\n        \"Improve UI with a history panel showing past calculations using the GET endpoints.\"\n    ],\n    \"issues_by_agent\": {\n        \"product_owner\": [],\n        \"architect\": [],\n        \"backend_engineer\": [],\n        \"frontend_engineer\": []\n    }\n}",
+      "error": null
+    }
+  },
+  "errors": [],
+  "qa_iterations": 1,
+  "manager_decisions": [],
+  "execution_time_seconds": 88.33,
+  "timestamp": "2026-01-18T23:59:13.541317",
+  "execution_log": [
+    "[23:57:45] Starting Pentagon Protocol",
+    "[23:57:45] Vibe Prompt: Build a simple calculator, which sould have minimum features : basic arithmetic operations (add, subtract, multiply, divide), number input, display result, clear function",
+    "[23:57:45] Output directory: output\\build_a_simple_calculator__which_sould_h_20260118_235745",
+    "[23:57:45] \n==================================================",
+    "[23:57:45] Initializing Agents",
+    "[23:57:45] ==================================================",
+    "[23:57:45]   Manager: Project Manager",
+    "[23:57:45]   product_owner: Product Owner",
+    "[23:57:45]   architect: Software Architect",
+    "[23:57:45]   backend_engineer: Backend Engineer",
+    "[23:57:45]   frontend_engineer: Frontend Engineer",
+    "[23:57:45]   qa_engineer: QA Engineer",
+    "[23:57:45] \n==================================================",
+    "[23:57:45] INITIAL RUN: Full Pipeline Execution",
+    "[23:57:45] ==================================================",
+    "[23:57:45] \n  Phase 1: Product Owner - User Stories",
+    "[23:58:01] \n  Phase 2: Architect - System Design",
+    "[23:58:10] \n  Phase 3: Backend Engineer - Backend Code",
+    "[23:58:31] \n  Phase 4: Frontend Engineer - Frontend Code",
+    "[23:58:59] \n  Phase 5: QA Engineer - Test Report",
+    "[23:59:13] \n  Initial Run Results:",
+    "[23:59:13]     User Stories: 9 stories created",
+    "[23:59:13]     System Design: 1 models, 5 endpoints",
+    "[23:59:13]     Backend Code: 1 files created",
+    "[23:59:13]     Frontend Code: 1 files created",
+    "[23:59:13]     Test Report: 5 tests, Status: pass",
+    "[23:59:13] \n==================================================",
+    "[23:59:13] QA PASSED - No issues found!",
+    "[23:59:13] ==================================================",
+    "[23:59:13] \n  Saving backend code files...",
+    "[23:59:13]     Saved: output\\build_a_simple_calculator__which_sould_h_20260118_235745\\backend\\main.py",
+    "[23:59:13]   Saving frontend code files...",
+    "[23:59:13]     Saved: output\\build_a_simple_calculator__which_sould_h_20260118_235745\\frontend\\index.html"
+  ],
+  "phases_succeeded": 5,
+  "qa_passed": true
+}

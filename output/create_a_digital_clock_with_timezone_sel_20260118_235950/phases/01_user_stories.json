@@ -1,0 +1,47 @@
+{
+  "stories": [
+    {
+      "id": "US001",
+      "title": "Display Current Time",
+      "description": "As a user, I want to see the current time in hours, minutes, and seconds so that I know the exact time.",
+      "priority": "high"
+    },
+    {
+      "id": "US002",
+      "title": "Auto-Update Time",
+      "description": "As a user, I want the clock to update automatically every second so that the time is always accurate.",
+      "priority": "high"
+    },
+    {
+      "id": "US003",
+      "title": "Select Timezone",
+      "description": "As a user, I want to select from multiple timezones so that I can view time in different regions.",
+      "priority": "high"
+    },
+    {
+      "id": "US004",
+      "title": "Toggle 12/24 Hour Format",
+      "description": "As a user, I want to toggle between 12-hour and 24-hour formats so that I can use my preferred time display.",
+      "priority": "medium"
+    },
+    {
+      "id": "US005",
+      "title": "Default Timezone Setting",
+      "description": "As a user, I want the clock to default to my local timezone so that it shows relevant time immediately.",
+      "priority": "medium"
+    },
+    {
+      "id": "US006",
+      "title": "Clear Timezone Labels",
+      "description": "As a user, I want timezone options to have clear labels (e.g., 'UTC-5: New York') so that I can easily identify them.",
+      "priority": "low"
+    },
+    {
+      "id": "US007",
+      "title": "Persist Format Preference",
+      "description": "As a user, I want my 12/24 hour format choice to be saved so that it remains consistent across sessions.",
+      "priority": "low"
+    }
+  ],
+  "summary": "Develop a digital clock application with core features including real-time display, timezone selection, and format toggling to provide users with accurate and customizable time viewing."
+}
